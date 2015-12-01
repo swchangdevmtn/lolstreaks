@@ -13,7 +13,17 @@ class Player {
     let name: String
     let level: Int
     let profileIconId: String
+    
+    //possible no game history
     var gameIds: [String]?
+    
+    //CURRENT GAME
+    //which team player is on, which champ selected, which 2 summoner spells
+    var teamId: Int?
+    var spell1Id: Int?
+    var spell2Id: Int?
+    var championId: Int?
+    
     
     init(json:[String:AnyObject]) {
         guard let summonerID = json["id"] as? String,
