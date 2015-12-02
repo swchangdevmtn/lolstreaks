@@ -59,6 +59,19 @@ class NetworkController {
         return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v1.3/stats/by-summoner/\(summonerId)/ranked?&api_key=\(ApiKey)")!
     }
     
+    //ranked stats:
+    
+    //gives matchIds and dates
+    static func pastTenRanked(region: String, summonerId: String) -> NSURL {
+        return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v2.2/matchlist/by-summoner/\(summonerId)?rankedQueues=RANKED_SOLO_5x5&seasons=PRESEASON2014,SEASON2014,PRESEASON2015,SEASON2015,PRESEASON2016,SEASON2016&beginIndex=0&endIndex=10&api_key=\(ApiKey)")!
+    }
+    
+    //stats of the match
+    static func pastRankedGame(region: String, matchId: String) -> NSURL {
+        return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v2.2/match/\(matchId)?api_key=\(ApiKey)")!
+    }
+    
+    
     static func dataAtURL(url:NSURL, completion:(resultData: NSData?) -> Void) {
         let session = NSURLSession.sharedSession()
         let dataTask = session.dataTaskWithURL(url) { (data, _, error) -> Void in

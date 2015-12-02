@@ -6,6 +6,9 @@
 //  Copyright © 2015 Sean Chang. All rights reserved.
 //
 
+//  PastGame class used to calculate KDA/WinRate
+
+
 import Foundation
 
 class PastGame {
