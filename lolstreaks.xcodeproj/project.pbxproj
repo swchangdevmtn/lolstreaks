@@ -19,6 +19,7 @@
 		54D40B751C0F507700B0AD4F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B741C0F507700B0AD4F /* SearchViewController.swift */; };
 		54D40B771C0F509A00B0AD4F /* CurrentGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B761C0F509A00B0AD4F /* CurrentGameViewController.swift */; };
 		54D40B791C0F50AE00B0AD4F /* PlayerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B781C0F50AE00B0AD4F /* PlayerDetailViewController.swift */; };
+		54D40B9F1C0FA71500B0AD4F /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B9E1C0FA71500B0AD4F /* PlayerController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		54D40B741C0F507700B0AD4F /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		54D40B761C0F509A00B0AD4F /* CurrentGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentGameViewController.swift; sourceTree = "<group>"; };
 		54D40B781C0F50AE00B0AD4F /* PlayerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailViewController.swift; sourceTree = "<group>"; };
+		54D40B9E1C0FA71500B0AD4F /* PlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				5404DA821C0D50B3007D7E64 /* Model */,
+				54D40BA01C0FA71F00B0AD4F /* ModelController */,
 				54D40B7A1C0F50BA00B0AD4F /* ViewControllers */,
 				5404DA6D1C0D4FFB007D7E64 /* lolstreaks */,
 				5404DA6C1C0D4FFB007D7E64 /* Products */,
@@ -100,6 +103,15 @@
 				54D40B781C0F50AE00B0AD4F /* PlayerDetailViewController.swift */,
 			);
 			name = ViewControllers;
+			path = lolstreaks;
+			sourceTree = "<group>";
+		};
+		54D40BA01C0FA71F00B0AD4F /* ModelController */ = {
+			isa = PBXGroup;
+			children = (
+				54D40B9E1C0FA71500B0AD4F /* PlayerController.swift */,
+			);
+			name = ModelController;
 			path = lolstreaks;
 			sourceTree = "<group>";
 		};
@@ -183,6 +195,7 @@
 				54D40B731C0E9A0900B0AD4F /* RankedGame.swift in Sources */,
 				5404DA6F1C0D4FFB007D7E64 /* AppDelegate.swift in Sources */,
 				54D40B791C0F50AE00B0AD4F /* PlayerDetailViewController.swift in Sources */,
+				54D40B9F1C0FA71500B0AD4F /* PlayerController.swift in Sources */,
 				5404DA8A1C0D5231007D7E64 /* NetworkController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

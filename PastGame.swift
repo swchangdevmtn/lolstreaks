@@ -6,7 +6,7 @@
 //  Copyright © 2015 Sean Chang. All rights reserved.
 //
 
-//  PastGame class used to calculate KDA/WinRate
+//  PastGame class used to calculate KDA/WinRate and details for profile
 
 
 import Foundation
