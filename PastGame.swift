@@ -38,10 +38,10 @@ class PastGame {
     let largestMultiKill: Int
     
     //calc damage contribution
-    let totalDamageDealtToChampions: Int
-    let totalDamageTaken: Int
+    var totalDamageDealtToChampions: Int?
+    var totalDamageTaken: Int?
     
-    let totalHeal: Int
+    var totalHeal: Int?
     
     var item0: Int?
     var item1: Int?

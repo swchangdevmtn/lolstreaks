@@ -10,6 +10,13 @@ import UIKit
 
 class SearchViewController: UIViewController {
 
+    @IBOutlet weak var regionTextField: UITextField!
+    
+    @IBOutlet weak var usernameTextField: UITextField!
+    
+    @IBAction func searchButtonTapped(sender: AnyObject) {
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

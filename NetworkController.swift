@@ -8,6 +8,8 @@
 
 import Foundation
 
+//items to update: API versions, regions
+
 class NetworkController {
     static let ApiKey = "21f813d8-e04d-4065-8f3a-c7b595fd21a5"
     static func searchForId(region: String, searchTerm: String) -> NSURL {
@@ -55,11 +57,16 @@ class NetworkController {
         return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v1.3/game/by-summoner/\(summonerId)/recent?api_key=\(ApiKey)")!
     }
     
+    //retrieve top played Champions in ranked
     static func summonerStats(region: String, summonerId: String) -> NSURL {
         return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v1.3/stats/by-summoner/\(summonerId)/ranked?&api_key=\(ApiKey)")!
     }
     
-    //ranked stats:
+    //rank of player:
+    static func playerRank(region: String, summonerId: String) -> NSURL {
+        return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v2.5/league/by-summoner/\(summonerId)/entry?api_key=\(ApiKey)")!
+    }
+    
     
     //gives matchIds and dates (last 5 ranked)
     static func pastFiveRanked(region: String, summonerId: String) -> NSURL {
@@ -71,6 +78,7 @@ class NetworkController {
         return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v2.2/match/\(matchId)?api_key=\(ApiKey)")!
     }
     
+    //images:
     
     //datadragon version:
     static func ddragonVer(region: String) -> NSURL {

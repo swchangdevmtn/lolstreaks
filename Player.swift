@@ -9,6 +9,11 @@
 import Foundation
 
 class Player {
+    static let IdKey = "id"
+    static let NameKey = "name"
+    static let LevelKey = "summonerLevel"
+    static let IconKey = "profileIconId"
+    
     let summonerID: String
     let name: String
     let level: Int
@@ -27,21 +32,18 @@ class Player {
     var championId: Int?
     
     
-    init(json:[String:AnyObject]) {
-        guard let summonerID = json["id"] as? String,
-            let name = json["name"] as? String,
-            let level = json["summonerLevel"] as? Int,
-            let profileIconId = json["profileIconId"] as? String
-            else {
-                self.summonerID = ""
-                self.name = ""
-                self.level = 0
-                self.profileIconId = ""
-                return
+    init(jsonDictionary:[String:AnyObject]) {
+        if let summonerID = jsonDictionary[Player.IdKey] as? String {
+            self.summonerID = summonerID
         }
-        self.summonerID = summonerID
-        self.name = name
-        self.level = level
-        self.profileIconId = profileIconId
+        if let name = jsonDictionary[Player.NameKey] as? String {
+            self.name = name
+        }
+        if let level = jsonDictionary[Player.LevelKey] as? Int {
+            self.level = level
+        }
+        if let profileIconId = jsonDictionary[Player.IconKey] as? String {
+            self.profileIconId = profileIconId
+        }
     }
 }
