@@ -19,8 +19,12 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        PlayerController.sharedInstance.searchForPlayerId("na", playerName: "thischair") { (result) -> Void in
+            guard let playerResult = result else {return}
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                print("\(playerResult.summonerID), \(playerResult.profileIconId), \(playerResult.level), \(playerResult.name)")
+            })
+        }
     }
 
     override func didReceiveMemoryWarning() {

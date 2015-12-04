@@ -95,14 +95,17 @@ class NetworkController {
     //championicon: http://ddragon.leagueoflegends.com/cdn/5.23.1/img/champion/Aatrox.png 
     //items: http://ddragon.leagueoflegends.com/cdn/5.23.1/img/item/1001.png
     
-    static func dataAtURL(url:NSURL, completion:(resultData: NSData?) -> Void) {
+    static func dataAtURL(url: NSURL, completion: (resultData: NSData?) -> Void) {
+        
         let session = NSURLSession.sharedSession()
+        
         let dataTask = session.dataTaskWithURL(url) { (data, _, error) -> Void in
             if let error = error {
                 print(error.localizedDescription)
             }
             completion(resultData: data)
         }
+        
         dataTask.resume()
     }
 }

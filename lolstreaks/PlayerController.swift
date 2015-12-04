@@ -12,10 +12,11 @@ class PlayerController {
     
     static let sharedInstance = PlayerController()
     
+    
     func searchForPlayerId(region: String, playerName: String, completion:(result: Player?) -> Void) {
-        let url = NetworkController.searchForId(region, searchTerm: playerName)
-
-//        let modifiedName = playerName.stringByReplacingOccurrencesOfString(" ", withString: "").lowercaseString
+       let url = NetworkController.searchForId(region, searchTerm: playerName)
+        
+        //        let modifiedName = playerName.stringByReplacingOccurrencesOfString(" ", withString: "").lowercaseString
         
         NetworkController.dataAtURL(url) { (resultData) -> Void in
             guard let resultData = resultData
@@ -32,7 +33,7 @@ class PlayerController {
                     playerModelObject = Player(jsonDictionary: playerDictionary)
                 }
                 completion(result: playerModelObject)
-            } catch {
+            }catch {
                 completion(result: nil)
             }
         }
