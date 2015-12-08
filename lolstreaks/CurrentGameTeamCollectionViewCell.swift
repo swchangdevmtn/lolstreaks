@@ -10,4 +10,6 @@ import UIKit
 
 class CurrentGameTeamCollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var teamLabel: UILabel!
+    
 }

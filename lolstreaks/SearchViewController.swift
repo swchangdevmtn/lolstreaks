@@ -15,16 +15,21 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var usernameTextField: UITextField!
     
     @IBAction func searchButtonTapped(sender: AnyObject) {
+        PlayerController.sharedInstance.searchForPlayer(regionTextField.text!, playerName: usernameTextField.text!) { (success) -> Void in
+            if success {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    print("success")
+                })
+            } else {
+                print("error")
+            }
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        PlayerController.sharedInstance.searchForPlayerId("na", playerName: "thischair") { (result) -> Void in
-            guard let playerResult = result else {return}
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                print("\(playerResult.summonerID), \(playerResult.profileIconId), \(playerResult.level), \(playerResult.name)")
-            })
-        }
+
+        
     }
 
     override func didReceiveMemoryWarning() {

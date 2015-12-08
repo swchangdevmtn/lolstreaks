@@ -10,6 +10,8 @@ import UIKit
 
 class CurrentGameViewController: UIViewController {
 
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

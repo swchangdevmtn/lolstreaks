@@ -9,5 +9,7 @@
 import UIKit
 
 class CurrentGamePlayerCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var championImage: UIImageView!
+    @IBOutlet weak var playerName: UILabel!
     
 }

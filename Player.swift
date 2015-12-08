@@ -14,10 +14,10 @@ class Player {
     let LevelKey = "summonerLevel"
     let IconKey = "profileIconId"
     
-    let summonerID: String
-    let name: String
-    let level: Int
-    let profileIconId: String
+    var summonerID: Int
+    var name: String
+    var level: Int
+    var profileIconId: Int
     
 //    //possible no game history
 //    var pastGames: [PastGame]
@@ -31,27 +31,28 @@ class Player {
 //    var spell2Id: Int?
 //    var championId: Int?
     
-    
-    init(jsonDictionary:[[String: AnyObject]]) {
-        if let summonerID = jsonDictionary[0][IdKey] as? String {
-            self.summonerID = summonerID
-        } else {
-            self.summonerID = ""
-        }
-        if let name = jsonDictionary[NameKey] as? String {
-            self.name = name
-        } else {
-            self.name = ""
-        }
-        if let level = jsonDictionary[LevelKey] as? Int {
-            self.level = level
-        } else {
-            self.level = -1
-        }
-        if let profileIconId = jsonDictionary[IconKey] as? String {
-            self.profileIconId = profileIconId
-        } else {
-            self.profileIconId = ""
-        }
+    init(summonerID: Int, name: String, level: Int, profileIconId: Int) {
+        self.summonerID = summonerID
+        self.name = name
+        self.level = level
+        self.profileIconId = profileIconId
     }
+    
+    init(json:[String:AnyObject]) {
+        guard let summonerID = json[IdKey] as? Int,
+            let name = json[NameKey] as? String,
+            let level = json[LevelKey] as? Int,
+            let profileIconId = json[IconKey] as? Int else {
+                self.summonerID = -1
+                self.name = ""
+                self.level = -1
+                self.profileIconId = -1
+                return
+        }
+        self.summonerID = summonerID
+        self.name = name
+        self.level = level
+        self.profileIconId = profileIconId
+    }
+    
 }

@@ -13,11 +13,11 @@ import Foundation
 class NetworkController {
     static let ApiKey = "21f813d8-e04d-4065-8f3a-c7b595fd21a5"
     static func searchForId(region: String, searchTerm: String) -> NSURL {
-        let modifiedSearchTerm = searchTerm.stringByReplacingOccurrencesOfString(" ", withString: "").lowercaseString
-        return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v1.4/summoner/by-name/\(modifiedSearchTerm)?api_key=\(ApiKey)")!
+        
+        return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v1.4/summoner/by-name/\(searchTerm)?api_key=\(ApiKey)")!
     }
     
-    static func currentGame(region: String, summonerId: String) -> NSURL {
+    static func currentGame(region: String, summonerId: Int) -> NSURL {
         var platformId = ""
         if region == "na" {
             platformId = "NA1"
@@ -102,6 +102,7 @@ class NetworkController {
         let dataTask = session.dataTaskWithURL(url) { (data, _, error) -> Void in
             if let error = error {
                 print(error.localizedDescription)
+                completion(resultData: nil)
             }
             completion(resultData: data)
         }
