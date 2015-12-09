@@ -29,11 +29,10 @@ class PlayerController {
                     self.currentPlayer.level = json[trimmedName]["summonerLevel"].intValue
                     self.currentPlayer.profileIconId = json[trimmedName]["profileIconId"].intValue
                     
-                    print(currentPlayer.name)
-                    print(currentPlayer.summonerID)
-                    print(currentPlayer.level)
-                    print(currentPlayer.profileIconId)
+                    print("name: \(currentPlayer.name), id: \(currentPlayer.summonerID), lvl: \(currentPlayer.level), profileIcon: \(currentPlayer.profileIconId)")
+                    
                 }
+                completion(success: true)
             }
         }
     }

@@ -12,8 +12,6 @@ class TeamController {
     
     static let sharedInstance = TeamController()
     
-    var teams = ["100", "200"]
-    
-    var numberOfPlayersOnTeam = [5]
+    var teams = ["Red Side", "Blue Side"]
     
 }

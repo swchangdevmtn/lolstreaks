@@ -191,6 +191,9 @@
                             <constraint firstItem="WxF-SM-9H9" firstAttribute="top" secondItem="b8D-ut-OQw" secondAttribute="bottom" id="ft0-rg-W7H"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="teamCollectionView" destination="WxF-SM-9H9" id="qIf-xC-OHo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="39j-69-Qmm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

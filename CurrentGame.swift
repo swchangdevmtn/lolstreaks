@@ -9,13 +9,23 @@
 import Foundation
 
 class CurrentGame {
-    let gameId: Int
-    let mapId: Int
-    let gameLength: Int
-    let gameMode: String
-    let gameType: String
-    let gameQueueConfigId: Int
-    let participants: []
+    var gameId: Int
+    var mapId: Int
+    var gameLength: Int
+    var gameMode: String
+    var gameType: String
+    var gameQueueConfigId: Int
+    var participants: [Participant]
+    
+    init(gameId: Int, mapId: Int, gameLength: Int, gameMode: String, gameType: String, gameQueueConfigId: Int, participants: [Participant]) {
+        self.gameId = gameId
+        self.mapId = mapId
+        self.gameLength = gameLength
+        self.gameMode = gameMode
+        self.gameType = gameType
+        self.gameQueueConfigId = gameQueueConfigId
+        self.participants = participants
+    }
     
     init(json:[String:AnyObject]) {
         guard let gameId = json["gameId"] as? Int,
@@ -41,6 +51,6 @@ class CurrentGame {
         self.gameMode = gameMode
         self.gameType = gameType
         self.gameQueueConfigId = gameQueueConfigId
-        self.participants = participants as! [Player]
+        self.participants = participants as! [Participant]
     }
 }

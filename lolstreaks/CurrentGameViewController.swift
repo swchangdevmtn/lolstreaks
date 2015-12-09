@@ -11,6 +11,7 @@ import UIKit
 class CurrentGameViewController: UIViewController {
 
     
+    @IBOutlet weak var teamCollectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,14 +25,24 @@ class CurrentGameViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+}
+
+extension CurrentGameViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("teamCell", forIndexPath: indexPath) as! CurrentGameTeamCollectionViewCell
+//        let team = CurrentGameController.sharedInstance.teams[indexPath.item]
+        cell.teamLabel.text = CurrentGameController.sharedInstance.teams[indexPath.item].keys.first
+        
+        return cell
     }
-    */
-
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return CurrentGameController.sharedInstance.teams.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSize(width: 300, height: 200)
+    }
 }
