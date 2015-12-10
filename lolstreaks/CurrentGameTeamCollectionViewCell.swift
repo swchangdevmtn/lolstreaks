@@ -12,6 +12,7 @@ class CurrentGameTeamCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var teamLabel: UILabel!
 
+    var myIndex : Int?
 
     
 }
@@ -22,27 +23,27 @@ extension CurrentGameTeamCollectionViewCell: UICollectionViewDelegateFlowLayout,
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("playerCell", forIndexPath: indexPath) as! CurrentGamePlayerCollectionViewCell
         
-        if let cellIndex = CurrentGameController.sharedInstance.parentCellIndex {
-            cell.playerName.text = CurrentGameController.sharedInstance.allteams[cellIndex][indexPath.item].summonerName
-            let championImage = CurrentGameController.sharedInstance.allteams[cellIndex][indexPath.item].championImg!
+        if let myIndex = myIndex {
+        
             let version = CurrentGameController.sharedInstance.ddragonVersion
+            let championImage = CurrentGameController.sharedInstance.allteams[myIndex][indexPath.item].championImg!
+            let spell1Image = CurrentGameController.sharedInstance.allteams[myIndex][indexPath.item].spell1Img!
+            let spell2Image = CurrentGameController.sharedInstance.allteams[myIndex][indexPath.item].spell2Img!
+            cell.playerName.text = CurrentGameController.sharedInstance.allteams[myIndex][indexPath.item].summonerName
             cell.championImage.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/champion/\(championImage)")!)!)
-            let spell1Image = CurrentGameController.sharedInstance.allteams[cellIndex][indexPath.item].spell1Img!
-            let spell2Image = CurrentGameController.sharedInstance.allteams[cellIndex][indexPath.item].spell2Img!
             cell.spell1Image.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell1Image)")!)!)
             cell.spell2Image.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell2Image)")!)!)
             return cell
         }
+        
         return cell
     }
     
 
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let cellIndex = CurrentGameController.sharedInstance.parentCellIndex {
-            return CurrentGameController.sharedInstance.allteams[cellIndex].count
-        }
-        return 1
+        
+        return CurrentGameController.sharedInstance.allteams[0].count
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {

@@ -35,7 +35,8 @@ extension CurrentGameViewController: UICollectionViewDataSource, UICollectionVie
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("teamCell", forIndexPath: indexPath) as! CurrentGameTeamCollectionViewCell
         cell.teamLabel.text = TeamController.sharedInstance.teams[indexPath.row]
         
-        CurrentGameController.sharedInstance.parentCellIndex = indexPath.item
+        print("PARENT: \(indexPath.item)")
+        cell.myIndex = indexPath.item
         
         return cell
     }

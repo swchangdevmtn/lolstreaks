@@ -46,7 +46,7 @@ class CurrentGameController {
                     self.currentGame.gameMode = json["gameMode"].stringValue
                     self.currentGame.gameType = json["gameType"].stringValue
                     self.currentGame.gameQueueConfigId = json["gameQueueConfigId"].intValue
-                    print("gameId: \(currentGame.gameId), gameLength: \(currentGame.gameLength), gameMode: \(currentGame.gameMode), gameType: \(currentGame.gameType), gameQueue: \(currentGame.gameQueueConfigId)")
+//                    print("gameId: \(currentGame.gameId), gameLength: \(currentGame.gameLength), gameMode: \(currentGame.gameMode), gameType: \(currentGame.gameType), gameQueue: \(currentGame.gameQueueConfigId)")
                     
                     if json["participants"][0]["teamId"].intValue > -1 {
                         do{
@@ -100,16 +100,16 @@ class CurrentGameController {
                                 allteams.append(teamblue)
 
                                 
-                                print("---REDTEAM---")
-                                for i in teamred {
-                                    let participant = i
-                                    print("\(participant.summonerName) - \(participant.championImg!) ")
-                                }
-                                print("---BLUETEAM---")
-                                for i in teamblue {
-                                    let participant = i
-                                    print("\(participant.summonerName) - \(participant.championImg!)")
-                                }
+//                                print("---REDTEAM---")
+//                                for i in teamred {
+//                                    let participant = i
+//                                    print("\(participant.summonerName) - \(participant.championImg!) ")
+//                                }
+//                                print("---BLUETEAM---")
+//                                for i in teamblue {
+//                                    let participant = i
+//                                    print("\(participant.summonerName) - \(participant.championImg!)")
+//                                }
                             
                                 
                                 
