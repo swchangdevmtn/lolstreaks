@@ -81,19 +81,25 @@ class NetworkController {
     //images:
     
     //datadragon version:
-    static func ddragonVer(region: String) -> NSURL {
-        return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/\(region)/v1.2/realm?api_key=\(ApiKey)")!
+    static func ddragonVersion(region: String) -> NSURL {
+        return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/\(region)/v1.2/versions?api_key=\(ApiKey)")!
     }
     
     //champion by ID
-    static func champion(championId: String) -> NSURL {
+    static func champion(championId: Int) -> NSURL {
         return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/\(championId)?champData=image&api_key=\(ApiKey)")!
+    }
+    
+    //summoner spells by ID
+    static func spell(spellId: Int) -> NSURL {
+        return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/na/v1.2/summoner-spell/\(spellId)?spellData=image&api_key=\(ApiKey)")!
     }
     
     //image examples:
     //profileicon: http://ddragon.leagueoflegends.com/cdn/5.23.1/img/profileicon/588.png 
     //championicon: http://ddragon.leagueoflegends.com/cdn/5.23.1/img/champion/Aatrox.png 
     //items: http://ddragon.leagueoflegends.com/cdn/5.23.1/img/item/1001.png
+    //summoner spell: http://ddragon.leagueoflegends.com/cdn/5.24.1/img/spell/SummonerFlash.png
     
     static func dataAtURL(url: NSURL, completion: (resultData: NSData?) -> Void) {
         

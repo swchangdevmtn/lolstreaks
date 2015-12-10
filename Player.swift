@@ -19,11 +19,11 @@ class Player {
     var level: Int
     var profileIconId: Int
     
-//    //possible no game history
-//    var pastGames: [PastGame]
-//    var rKDA: Double
-//    var rWinrate: Int
-//    
+    //possible no game history
+    var pastGames: [PastGame]?
+    var rKDA: Double?
+    var rWinrate: Int?
+    
 //    //CURRENT GAME
 //    //which team player is on, which champ selected, which 2 summoner spells
 //    var teamId: Int?

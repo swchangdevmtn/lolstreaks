@@ -34,6 +34,9 @@ class PlayerController {
                 }
                 completion(success: true)
             }
+        } else {
+            completion(success: false)
         }
+        
     }
 }

@@ -12,7 +12,12 @@ class Participant {
     var teamId: Int
     var spell1Id: Int
     var spell2Id: Int
+    
+    var spell1Img: String?
+    var spell2Img: String?
+    
     var championId: Int
+    var championImg: String?
     var profileIconId: Int
     var summonerName: String
     var summonerId: Int
@@ -22,6 +27,7 @@ class Participant {
         self.spell1Id = spell1Id
         self.spell2Id = spell2Id
         self.championId = championId
+        
         self.profileIconId = profileIconId
         self.summonerName = summonerName
         self.summonerId = summonerId

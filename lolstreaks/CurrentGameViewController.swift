@@ -13,6 +13,7 @@ class CurrentGameViewController: UIViewController {
     
     @IBOutlet weak var teamCollectionView: UICollectionView!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -32,17 +33,18 @@ extension CurrentGameViewController: UICollectionViewDataSource, UICollectionVie
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("teamCell", forIndexPath: indexPath) as! CurrentGameTeamCollectionViewCell
-//        let team = CurrentGameController.sharedInstance.teams[indexPath.item]
-        cell.teamLabel.text = CurrentGameController.sharedInstance.teams[indexPath.item].keys.first
+        cell.teamLabel.text = TeamController.sharedInstance.teams[indexPath.row]
+        
+        CurrentGameController.sharedInstance.parentCellIndex = indexPath.item
         
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return CurrentGameController.sharedInstance.teams.count
+        return CurrentGameController.sharedInstance.allteams.count
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: 300, height: 200)
+        return CGSize(width: self.view.frame.size.width-20, height: self.view.frame.size.height/2 - 100)
     }
 }
