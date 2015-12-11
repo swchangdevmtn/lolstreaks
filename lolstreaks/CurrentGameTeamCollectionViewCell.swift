@@ -42,12 +42,14 @@ extension CurrentGameTeamCollectionViewCell: UICollectionViewDelegateFlowLayout,
 
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return CurrentGameController.sharedInstance.allteams[0].count
+        if let myIndex = myIndex {
+            return CurrentGameController.sharedInstance.allteams[myIndex].count
+        }
+        return 0
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: 280, height: 50)
+        return CGSize(width: 280, height: 40)
     }
     
 }
