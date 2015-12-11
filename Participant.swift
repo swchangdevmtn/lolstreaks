@@ -17,10 +17,19 @@ class Participant {
     var spell2Img: String?
     
     var championId: Int
+    var championName: String?
     var championImg: String?
+    
     var profileIconId: Int
     var summonerName: String
     var summonerId: Int
+    
+    
+    //possible no game history
+    var pastGames: [PastGame]?
+    var rKDA: Double?
+    var rWinrate: Int?
+    
     
     init(teamId: Int, spell1Id: Int, spell2Id: Int, championId: Int, profileIconId: Int, summonerName: String, summonerId: Int) {
         self.teamId = teamId

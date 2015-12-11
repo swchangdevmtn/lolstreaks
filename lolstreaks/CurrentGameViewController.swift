@@ -35,7 +35,6 @@ extension CurrentGameViewController: UICollectionViewDataSource, UICollectionVie
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("teamCell", forIndexPath: indexPath) as! CurrentGameTeamCollectionViewCell
         cell.teamLabel.text = TeamController.sharedInstance.teams[indexPath.row]
         
-        print("PARENT: \(indexPath.item)")
         cell.myIndex = indexPath.item
         
         return cell
@@ -46,6 +45,6 @@ extension CurrentGameViewController: UICollectionViewDataSource, UICollectionVie
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: self.view.frame.size.width-20, height: self.view.frame.size.height/2 - 100)
+        return CGSize(width: self.view.frame.size.width-50, height: 250)
     }
 }

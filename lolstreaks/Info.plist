@@ -27,24 +27,24 @@
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>ddragon.leagueoflegends.com</key>
-            <dict>
-                <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                <true/>
-                <key>NSExceptionMinimumTLSVersion</key>
-                <string>TLSv1.2</string>
-                <key>NSExceptionRequiresForwardSecrecy</key>
-                <true/>
-                <key>NSIncludesSubdomains</key>
-                <false/>
-                <key>NSRequiresCertificateTransparency</key>
-                <false/>
-                <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-                <false/>
-                <key>NSThirdPartyExceptionMinimumTLSVersion</key>
-                <string>TLSv1.2</string>
-                <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-                <true/>
-            </dict>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionMinimumTLSVersion</key>
+				<string>TLSv1.2</string>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<false/>
+				<key>NSRequiresCertificateTransparency</key>
+				<false/>
+				<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+				<false/>
+				<key>NSThirdPartyExceptionMinimumTLSVersion</key>
+				<string>TLSv1.2</string>
+				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+				<true/>
+			</dict>
 			<key>api.pvp.net</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>

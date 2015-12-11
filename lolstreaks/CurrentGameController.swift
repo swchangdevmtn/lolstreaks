@@ -46,7 +46,7 @@ class CurrentGameController {
                     self.currentGame.gameMode = json["gameMode"].stringValue
                     self.currentGame.gameType = json["gameType"].stringValue
                     self.currentGame.gameQueueConfigId = json["gameQueueConfigId"].intValue
-//                    print("gameId: \(currentGame.gameId), gameLength: \(currentGame.gameLength), gameMode: \(currentGame.gameMode), gameType: \(currentGame.gameType), gameQueue: \(currentGame.gameQueueConfigId)")
+                    print("gameId: \(currentGame.gameId), gameLength: \(currentGame.gameLength), gameMode: \(currentGame.gameMode), gameType: \(currentGame.gameType), gameQueue: \(currentGame.gameQueueConfigId)")
                     
                     if json["participants"][0]["teamId"].intValue > -1 {
                         do{
@@ -61,10 +61,12 @@ class CurrentGameController {
                                     //grabbing champion image
                                     let championID = participant.championId
                                     var championImage: String = ""
+                                    var championName: String = ""
                                     if let championURL = NetworkController.champion(championID) as NSURL? {
                                         if let championData = NSData(contentsOfURL: championURL) {
                                             let json = JSON(data: championData)
                                             championImage = json["image"]["full"].stringValue
+                                            championName = json["name"].stringValue
                                             
                                         }
                                         
@@ -92,6 +94,7 @@ class CurrentGameController {
                                     participant.spell1Img = spell1Image
                                     participant.spell2Img = spell2Image
                                     participant.championImg = championImage
+                                    participant.championName = championName
                                     self.allParticipants.append(participant)
                                 }
                                 teamblue = allParticipants.filter({$0.teamId == 100})
@@ -100,16 +103,16 @@ class CurrentGameController {
                                 allteams.append(teamblue)
 
                                 
-//                                print("---REDTEAM---")
-//                                for i in teamred {
-//                                    let participant = i
-//                                    print("\(participant.summonerName) - \(participant.championImg!) ")
-//                                }
-//                                print("---BLUETEAM---")
-//                                for i in teamblue {
-//                                    let participant = i
-//                                    print("\(participant.summonerName) - \(participant.championImg!)")
-//                                }
+                                print("---REDTEAM---")
+                                for i in teamred {
+                                    let participant = i
+                                    print("\(participant.summonerName)")
+                                }
+                                print("---BLUETEAM---")
+                                for i in teamblue {
+                                    let participant = i
+                                    print("\(participant.summonerName)")
+                                }
                             
                                 
                                 
