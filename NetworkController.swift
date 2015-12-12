@@ -17,6 +17,10 @@ class NetworkController {
         return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v1.4/summoner/by-name/\(searchTerm)?api_key=\(ApiKey)")!
     }
     
+    static func searchForLevels(region: String, ids: String) -> NSURL {
+        return NSURL(string: "https://na.api.pvp.net/api/lol/na/v1.4/summoner/\(ids)?api_key=\(ApiKey)")!
+    }
+    
     static func currentGame(region: String, summonerId: Int) -> NSURL {
         var platformId = ""
         if region == "na" {

@@ -20,6 +20,7 @@ class CurrentGameController {
     var teamred: [Participant] = []
     var allteams: [[Participant]] = []
     var ddragonVersion: String = ""
+    var levelDictionary: NSDictionary = [:]
     
     func searchForCurrentGame(region: String, summonerId: Int, completion:(success: Bool) -> Void) {
         if let ddragonVersionURL = NetworkController.ddragonVersion(region) as NSURL? {
@@ -53,12 +54,41 @@ class CurrentGameController {
                             let resultsAnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
                             if let resultsDictionary = resultsAnyObject as? [String: AnyObject] {
                                 let participantArray = resultsDictionary["participants"] as? [[String: AnyObject]]
+                                var idString = ""
+                                for levelDictionary in participantArray! {
+                                    //id String for summoner levels
+                                    let participant = Participant(json: levelDictionary)
+                                    idString += String(participant.summonerId) + ","
+                                }
+                                print(idString)
+                                //saving dictionary for grabbing levels
+                                levelDictionary = [:]
+                                if let levelURL = NetworkController.searchForLevels(region, ids: idString) as NSURL? {
+                                    if let levelData = NSData(contentsOfURL: levelURL) {
+                                        do {
+                                            let resultsAnyObject = try NSJSONSerialization.JSONObjectWithData(levelData, options: .AllowFragments)
+                                            levelDictionary = resultsAnyObject as! NSDictionary
+                                            
+                                        } catch {
+                                            completion(success: false)
+                                        }
+                                    }
+                                }
+                                
                                 for participantDictionary in participantArray! {
                                     
                                     //participant created from the dicionary without image info
                                     let participant = Participant(json: participantDictionary)
                                     
-                                    //grabbing champion image
+                                    //grabbing level for participant from saved dictionary (levelDictionary)
+                                    let levelDictionaryKey = String(participant.summonerId)
+                                    if let playersDictionary = levelDictionary[levelDictionaryKey] {
+                                        
+                                        participant.summonerLevel = playersDictionary["summonerLevel"] as? Int
+                                    }
+                                    
+                                    
+                                    //grabbing champion image and name
                                     let championID = participant.championId
                                     var championImage: String = ""
                                     var championName: String = ""
@@ -67,9 +97,7 @@ class CurrentGameController {
                                             let json = JSON(data: championData)
                                             championImage = json["image"]["full"].stringValue
                                             championName = json["name"].stringValue
-                                            
                                         }
-                                        
                                     }
                                     
                                     //grabbing spell images
@@ -90,19 +118,19 @@ class CurrentGameController {
                                         }
                                     }
                                     
-                                    // manually add championImage and spellImages data to participant
+                                    // manually add champion info and spellImages data to participant
                                     participant.spell1Img = spell1Image
                                     participant.spell2Img = spell2Image
                                     participant.championImg = championImage
                                     participant.championName = championName
                                     self.allParticipants.append(participant)
                                 }
+                                
                                 teamblue = allParticipants.filter({$0.teamId == 100})
                                 teamred = allParticipants.filter({$0.teamId == 200})
                                 allteams.append(teamred)
                                 allteams.append(teamblue)
 
-                                
                                 print("---REDTEAM---")
                                 for i in teamred {
                                     let participant = i
@@ -113,8 +141,6 @@ class CurrentGameController {
                                     let participant = i
                                     print("\(participant.summonerName)")
                                 }
-                            
-                                
                                 
                                 completion(success: true)
                             } else {

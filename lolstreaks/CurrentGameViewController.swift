@@ -16,8 +16,8 @@ class CurrentGameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        // Do the recent game search here
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,7 +35,7 @@ extension CurrentGameViewController: UICollectionViewDataSource, UICollectionVie
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("teamCell", forIndexPath: indexPath) as! CurrentGameTeamCollectionViewCell
         cell.teamLabel.text = TeamController.sharedInstance.teams[indexPath.row]
         
-        cell.myIndex = indexPath.item
+        cell.parentIndex = indexPath.item
         
         return cell
     }

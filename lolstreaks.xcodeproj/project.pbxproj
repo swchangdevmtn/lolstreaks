@@ -102,8 +102,8 @@
 				5404DA8B1C0D5284007D7E64 /* Player.swift */,
 				54B2720F1C179E6F0090A47A /* Participant.swift */,
 				5404DA8D1C0D528E007D7E64 /* CurrentGame.swift */,
-				54D40B721C0E9A0900B0AD4F /* RankedGame.swift */,
 				5404DA8F1C0D5295007D7E64 /* PastGame.swift */,
+				54D40B721C0E9A0900B0AD4F /* RankedGame.swift */,
 			);
 			name = Model;
 			path = lolstreaks;

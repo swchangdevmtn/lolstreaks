@@ -32,6 +32,8 @@ extension CurrentGameTeamCollectionViewCell: UICollectionViewDelegateFlowLayout,
             
             cell.playerName.text = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].summonerName
             cell.championName.text = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].championName
+            cell.levelLabel.text = String("lvl: \(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].summonerLevel!)")
+            
             cell.championImage.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/champion/\(championImage)")!)!)
             cell.spell1Image.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell1Image)")!)!)
             cell.spell2Image.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell2Image)")!)!)
@@ -45,8 +47,8 @@ extension CurrentGameTeamCollectionViewCell: UICollectionViewDelegateFlowLayout,
 
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let myIndex = parentIndex {
-            return CurrentGameController.sharedInstance.allteams[myIndex].count
+        if let parentIndex = parentIndex {
+            return CurrentGameController.sharedInstance.allteams[parentIndex].count
         }
         return 0
     }

@@ -15,8 +15,10 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var usernameTextField: UITextField!
     
     @IBAction func searchButtonTapped(sender: AnyObject) {
+        //1
         PlayerController.sharedInstance.searchForPlayer(regionTextField.text!, playerName: usernameTextField.text!) { (success) -> Void in
             if success {
+                //3
                 CurrentGameController.sharedInstance.searchForCurrentGame(self.regionTextField.text!, summonerId: PlayerController.sharedInstance.currentPlayer.summonerID, completion: { (success) -> Void in
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         print("success")

@@ -23,7 +23,10 @@ class Participant {
     var profileIconId: Int
     var summonerName: String
     var summonerId: Int
+    var summonerLevel: Int?
     
+    //this has to come from another networkcontroller
+    var level: Int?
     
     //possible no game history
     var pastGames: [PastGame]?
