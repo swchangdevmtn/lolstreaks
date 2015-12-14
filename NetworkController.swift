@@ -57,7 +57,7 @@ class NetworkController {
         return NSURL(string: "https://\(region).api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/\(platformId)/\(summonerId)?api_key=\(ApiKey)")!
     }
     
-    static func pastTenGames(region: String, summonerId: String) -> NSURL {
+    static func pastTenGames(region: String, summonerId: Int) -> NSURL {
         return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v1.3/game/by-summoner/\(summonerId)/recent?api_key=\(ApiKey)")!
     }
     

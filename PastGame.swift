@@ -8,60 +8,28 @@
 
 //  PastGame class used to calculate KDA/WinRate and details for profile
 
-
 import Foundation
 
 class PastGame {
-    let summonerId: Int
-    let gameId: Int
-    let gameMode: String
-    let gameType: String
-    let subType: String
-    let mapId: Int
-    let teamId: Int
-    let championId: Int
-    let spell1Id: Int
-    let spell2Id: Int
-    let createDate: Int
+    var summonerId: Int?
+    var gameId: Int
+    var invalid: Bool
+    var gameMode: String
+    var gameType: String
+    var subType: String
+    var mapId: Int
+    var teamId: Int
+    var fellowPlayers: [PastPlayer]?
+    var championId: Int
+    var spell1Id: Int
+    var spell2Id: Int
+    var createDate: Int
+    var gameLevel: Int
     
-    //personal stats for game:
-    
-    let gameLevel: Int
-    var gold: Int?
-    var minionsKilled: Int?
-    var barracksKilled: Int?
-    var turretsKilled: Int?
-    
-    //KDA
-    var championsKilled: Int?
-    var numDeaths: Int?
-    var assists: Int?
-    
-    var largestMultiKill: Int?
-    
-    //calc damage contribution
-    var totalDamageDealtToChampions: Int?
-    var totalDamageTaken: Int?
-    
-    var totalHeal: Int?
-    
-    var item0: Int?
-    var item1: Int?
-    var item2: Int?
-    var item3: Int?
-    var item4: Int?
-    var item5: Int?
-    var item6: Int?
-    
-    var wardPlaced: Int?
-    var wardKilled: Int?
-    
-    //win percentage
-    let win: Bool
-    
-    init(summonerId: Int, gameId: Int, gameMode: String, gameType: String, subType: String, mapId: Int, teamId: Int, championId: Int, spell1Id: Int, spell2Id: Int, createDate: Int, gameLevel: Int, win: Bool) {
-        self.summonerId = summonerId
+    init(gameId: Int, invalid: Bool, gameMode: String, gameType: String, subType: String, mapId: Int, teamId: Int, championId: Int, spell1Id: Int, spell2Id: Int, createDate: Int, gameLevel: Int) {
+        
         self.gameId = gameId
+        self.invalid = invalid
         self.gameMode = gameMode
         self.gameType = gameType
         self.subType = subType
@@ -72,7 +40,47 @@ class PastGame {
         self.spell2Id = spell2Id
         self.createDate = createDate
         self.gameLevel = gameLevel
-        self.win = win
+    }
+    
+    init(json:[String: AnyObject]) {
+        guard let gameId = json["gameId"] as? Int,
+            let invalid = json["invalid"] as? Bool,
+            let gameMode = json["gameMode"] as? String,
+            let gameType = json["gameType"] as? String,
+            let subType = json["subType"] as? String,
+            let mapId = json["mapId"] as? Int,
+            let teamId = json["teamId"] as? Int,
+            let championId = json["championId"] as? Int,
+            let spell1Id = json["spell1"] as? Int,
+            let spell2Id = json["spell2"] as? Int,
+            let createDate = json["createDate"] as? Int,
+            let gameLevel = json["level"] as? Int else {
+                self.gameId = -1
+                self.invalid = false
+                self.gameMode = ""
+                self.gameType = ""
+                self.subType = ""
+                self.mapId = -1
+                self.teamId = -1
+                self.championId = -1
+                self.spell1Id = -1
+                self.spell2Id = -1
+                self.createDate = -1
+                self.gameLevel = -1
+                return
+        }
+        self.gameId = gameId
+        self.invalid = invalid
+        self.gameMode = gameMode
+        self.gameType = gameType
+        self.subType = subType
+        self.mapId = mapId
+        self.teamId = teamId
+        self.championId = championId
+        self.spell1Id = spell1Id
+        self.spell2Id = spell2Id
+        self.createDate = createDate
+        self.gameLevel = gameLevel
     }
 }
 

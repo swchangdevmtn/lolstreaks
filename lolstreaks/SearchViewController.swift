@@ -21,7 +21,18 @@ class SearchViewController: UIViewController {
                 //3
                 CurrentGameController.sharedInstance.searchForCurrentGame(self.regionTextField.text!, summonerId: PlayerController.sharedInstance.currentPlayer.summonerID, completion: { (success) -> Void in
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        print("success")
+                        if CurrentGameController.sharedInstance.currentGame.gameId != 0 && CurrentGameController.sharedInstance.currentGame.gameId != -1 {
+                            self.performSegueWithIdentifier("searchToCollection", sender: self.self)
+                            print("success")
+                        } else {
+                            print("try again")
+                            let noGameAlert = UIAlertController(title: "No game", message: "Player is currently not in a game", preferredStyle: .Alert)
+                            noGameAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+                            noGameAlert.addAction(UIAlertAction(title: "Go to profile", style: .Default, handler: { (action) -> Void in
+                                self.performSegueWithIdentifier("alertToProfile", sender: self)
+                            }))
+                            self.presentViewController(noGameAlert, animated: true, completion: nil)
+                        }
                     })
                 })
                 

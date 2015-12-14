@@ -33,12 +33,16 @@ class PlayerController {
                     
                 }
                 completion(success: true)
+            } else {
+                // alert controller here for no player found by that name
+                print("no player found by that name")
+                completion(success: false)
             }
+            
         } else {
             completion(success: false)
         }
         
     }
-    
     
 }

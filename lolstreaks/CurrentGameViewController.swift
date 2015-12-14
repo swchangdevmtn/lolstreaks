@@ -17,6 +17,7 @@ class CurrentGameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do the recent game search here
+
         
     }
 
@@ -26,6 +27,7 @@ class CurrentGameViewController: UIViewController {
     }
     
 
+    
 
 }
 
@@ -45,6 +47,6 @@ extension CurrentGameViewController: UICollectionViewDataSource, UICollectionVie
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: self.view.frame.size.width-50, height: 250)
+        return CGSize(width: self.view.frame.size.width-50, height: 40*5+45)
     }
 }

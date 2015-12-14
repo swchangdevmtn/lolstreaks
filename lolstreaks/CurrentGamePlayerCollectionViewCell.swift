@@ -17,4 +17,6 @@ class CurrentGamePlayerCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var spell1Image: UIImageView!
     @IBOutlet weak var spell2Image: UIImageView!
+    
+
 }
