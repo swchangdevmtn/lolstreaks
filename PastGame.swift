@@ -11,7 +11,6 @@
 import Foundation
 
 class PastGame {
-    var summonerId: Int?
     var gameId: Int
     var invalid: Bool
     var gameMode: String
@@ -25,6 +24,7 @@ class PastGame {
     var spell2Id: Int
     var createDate: Int
     var gameLevel: Int
+    var stats: Stats?
     
     init(gameId: Int, invalid: Bool, gameMode: String, gameType: String, subType: String, mapId: Int, teamId: Int, championId: Int, spell1Id: Int, spell2Id: Int, createDate: Int, gameLevel: Int) {
         

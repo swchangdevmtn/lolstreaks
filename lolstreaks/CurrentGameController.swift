@@ -14,12 +14,14 @@ class CurrentGameController {
     
     var currentGame = CurrentGame(gameId: -1, mapId: -1, gameLength: -1, gameMode: "", gameType: "", gameQueueConfigId: -1, participants: [])
     var allParticipants: [Participant] = []
+    var allIds: [Int] = []
     var parentCellIndex: Int?
     var teamblue: [Participant] = []
     var teamred: [Participant] = []
     var allteams: [[Participant]] = []
     var ddragonVersion: String = ""
     var levelDictionary: NSDictionary = [:]
+    var savedRegion: String = ""
     
     func searchForDdragonVersion(region: String, completion:(success: Bool) -> Void) {
         if let ddragonVersionURL = NetworkController.ddragonVersion(region) as NSURL? {
@@ -39,6 +41,7 @@ class CurrentGameController {
     func searchForCurrentGame(region: String, summonerId: Int, completion:(success: Bool) -> Void) {
         searchForDdragonVersion(region) { (success) -> Void in
             print(self.ddragonVersion)
+            self.savedRegion = region
             if let currentGameURL = NetworkController.currentGame(region, summonerId: summonerId) as NSURL? {
                 NetworkController.dataAtURL(currentGameURL, completion: { (resultData) -> Void in
                     guard let data = resultData else {
@@ -74,6 +77,7 @@ class CurrentGameController {
                             for participantDictionary in participantArray! {
                                 let participant = Participant(json: participantDictionary)
                                 idString += String(participant.summonerId) + ","
+                                self.allIds.append(participant.summonerId)
                             }
                             print("gameIds: \(idString)")
                             self.levelDictionary = [:]
@@ -142,6 +146,7 @@ class CurrentGameController {
                                         let participant = i
                                         print("\(participant.summonerName)")
                                     }
+                                    print(self.allIds)
                                     completion(success: true)
                                 } catch {
                                     completion(success: false)

@@ -18,4 +18,18 @@ class PastPlayer {
         self.teamId = teamId
         self.championId = championId
     }
+    
+    init(json:[String:AnyObject]){
+        guard let summonerId = json["summonerId"] as? Int,
+            let teamId = json["teamId"] as? Int,
+            let championId = json["championId"] as? Int else {
+                self.summonerId = -1
+                self.teamId = -1
+                self.championId = -1
+                return
+        }
+        self.summonerId = summonerId
+        self.teamId = teamId
+        self.championId = championId
+    }
 }

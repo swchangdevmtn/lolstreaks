@@ -17,8 +17,16 @@ class CurrentGameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do the recent game search here
-
-        
+        //array of Ids
+        let allIds = CurrentGameController.sharedInstance.allIds
+        for id in allIds {
+            PastGameController.sharedInstance.searchForTenRecentGames(CurrentGameController.sharedInstance.savedRegion, summonerId: id) { (success) -> Void in
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    print("pastgames success")
+                })
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {

@@ -28,8 +28,10 @@ extension CurrentGameTeamCollectionViewCell: UICollectionViewDelegateFlowLayout,
             
             switch parentIndex {
             case 0:
+                //red
                 cell.backgroundColor = UIColor(red: 235/255, green: 89/255, blue: 89/255, alpha: 1)
             case 1:
+                //blue
                 cell.backgroundColor = UIColor(red: 89/255, green: 137/255, blue: 235/255, alpha: 1)
             default:
                 cell.backgroundColor = UIColor.grayColor()

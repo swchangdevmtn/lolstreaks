@@ -18,7 +18,7 @@ class SearchViewController: UIViewController {
         //1
         PlayerController.sharedInstance.searchForPlayer(regionTextField.text!, playerName: usernameTextField.text!) { (success) -> Void in
             if success {
-                //3
+                //3 calls
                 CurrentGameController.sharedInstance.searchForCurrentGame(self.regionTextField.text!, summonerId: PlayerController.sharedInstance.currentPlayer.summonerID, completion: { (success) -> Void in
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         if CurrentGameController.sharedInstance.currentGame.gameId != 0 && CurrentGameController.sharedInstance.currentGame.gameId != -1 {
