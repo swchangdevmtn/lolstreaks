@@ -14,16 +14,17 @@ class CurrentGameTeamCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var turretImage: UIImageView!
 
     var parentIndex : Int?
+    var childIndex : Int?
 
 
-//    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "collectionToProfile" {
-//            if let detailViewController = segue.destinationViewController as? PlayerDetailViewController {
-//                _=detailViewController.view
-//                let indexPath = collectionView(<#T##collectionView: UICollectionView##UICollectionView#>, didDeselectItemAtIndexPath: <#T##NSIndexPath#>)
-//            }
-//        }
-//    }
+    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "collectionToProfile" {
+            if let detailViewController = segue.destinationViewController as? PlayerDetailViewController {
+                _ = detailViewController.view
+                print(sender?.identifier)
+            }
+        }
+    }
 
 }
 
@@ -133,5 +134,15 @@ extension CurrentGameTeamCollectionViewCell: UICollectionViewDelegateFlowLayout,
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 40)
     }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        childIndex = indexPath.item
+        
+        if let parentView = self.c as? CurrentGameViewController {
+            parentView.performSegueWithIdentifier(<#T##identifier: String##String#>, sender: <#T##AnyObject?#>)
+        }
+        
+    }
+
     
 }

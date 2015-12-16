@@ -33,33 +33,34 @@ class CurrentGameViewController: UIViewController {
 //            }
 //        }
         
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: "handleLongGesture:")
-        self.teamCollectionView.addGestureRecognizer(longPressGesture)
-        
-        
+//        let longPressGesture = UILongPressGestureRecognizer(target: self, action: "handleLongGesture:")
+//        self.teamCollectionView.addGestureRecognizer(longPressGesture)
+//        
+//        
+//    }
+//    
+//    func handleLongGesture(gesture: UILongPressGestureRecognizer) {
+//        
+//        switch(gesture.state) {
+//            
+//        case UIGestureRecognizerState.Began:
+//            guard let selectedIndexPath = self.teamCollectionView.indexPathForItemAtPoint(gesture.locationInView(self.teamCollectionView)) else {
+//                break
+//            }
+//            teamCollectionView.beginInteractiveMovementForItemAtIndexPath(selectedIndexPath)
+//        case UIGestureRecognizerState.Changed:
+//            teamCollectionView.updateInteractiveMovementTargetPosition(gesture.locationInView(gesture.view!))
+//        case UIGestureRecognizerState.Ended:
+//            teamCollectionView.endInteractiveMovement()
+//        default:
+//            teamCollectionView.cancelInteractiveMovement()
+//        }
+//    }
     }
     
-    func handleLongGesture(gesture: UILongPressGestureRecognizer) {
-        
-        switch(gesture.state) {
-            
-        case UIGestureRecognizerState.Began:
-            guard let selectedIndexPath = self.teamCollectionView.indexPathForItemAtPoint(gesture.locationInView(self.teamCollectionView)) else {
-                break
-            }
-            teamCollectionView.beginInteractiveMovementForItemAtIndexPath(selectedIndexPath)
-        case UIGestureRecognizerState.Changed:
-            teamCollectionView.updateInteractiveMovementTargetPosition(gesture.locationInView(gesture.view!))
-        case UIGestureRecognizerState.Ended:
-            teamCollectionView.endInteractiveMovement()
-        default:
-            teamCollectionView.cancelInteractiveMovement()
-        }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+   
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print(sender?.identifier)
     }
     
     

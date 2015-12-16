@@ -20,7 +20,7 @@ class SearchViewController: UIViewController {
     
     @IBAction func searchButtonTapped(sender: AnyObject) {
         //1
-        PlayerController.sharedInstance.searchForPlayer(regionTextField.text!, playerName: usernameTextField.text!) { (success) -> Void in
+        PlayerController.sharedInstance.searchForPlayer(regionTextField.text!.lowercaseString, playerName: usernameTextField.text!) { (success) -> Void in
             if success {
                 //3 calls
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
