@@ -41,6 +41,7 @@ class SearchViewController: UIViewController {
                                 NSThread.sleepForTimeInterval(1)
                                 PastGameController.sharedInstance.searchForTenRecentGames(self.regionTextField.text!, summonerId: id, completion: { (success) -> Void in
                                     print("past games appended to Player: \(id)")
+
                                 })
                             }
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -66,6 +67,10 @@ class SearchViewController: UIViewController {
                 
             } else {
                 print("error")
+                //alertcontroller
+                let noPlayerAlert = UIAlertController(title: "No player", message: "No player found by that name", preferredStyle:  .Alert)
+                noPlayerAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+                self.presentViewController(noPlayerAlert, animated: true, completion: nil)
             }
         }
     }
@@ -73,6 +78,7 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         statusLabel.text = " "
+        
         
     }
     

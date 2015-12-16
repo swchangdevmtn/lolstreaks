@@ -24,10 +24,16 @@ class CurrentGameTeamCollectionViewCell: UICollectionViewCell {
 //            }
 //        }
 //    }
-    
+
 }
 
 extension CurrentGameTeamCollectionViewCell: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    func collectionView(collectionView: UICollectionView, moveItemAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        let temp = CurrentGameController.sharedInstance.allteams[parentIndex!][sourceIndexPath.item]
+        CurrentGameController.sharedInstance.allteams[parentIndex!][sourceIndexPath.item] = CurrentGameController.sharedInstance.allteams[parentIndex!][destinationIndexPath.item]
+        CurrentGameController.sharedInstance.allteams[parentIndex!][destinationIndexPath.item] = temp
+    }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
@@ -38,35 +44,37 @@ extension CurrentGameTeamCollectionViewCell: UICollectionViewDelegateFlowLayout,
             switch parentIndex {
             case 0:
                 //red
-                cell.backgroundColor = UIColor(red: 148/255, green: 48/255, blue: 33/255, alpha: 0.5)
+                cell.backgroundColor = UIColor(red: 208/255, green: 127/255, blue: 115/255, alpha: 0.5)
             case 1:
                 //blue
-                cell.backgroundColor = UIColor(red: 27/255, green: 91/255, blue: 135/255, alpha: 0.5)
+                cell.backgroundColor = UIColor(red: 116/255, green: 168/255, blue: 204/255, alpha: 0.5)
             default:
                 cell.backgroundColor = UIColor.grayColor()
             }
-            if let pastGame = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].pastGames![0].gameId as Int? {
-                cell.lastGameLabel.text = "\(pastGame)"
-                if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rKDA == -100 {
-                    if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames == 0 {
-                        cell.rKDALabel.text = "-"
-                        cell.rWinRateLabel.text = "-"
-                        cell.rCountedGamesLabel.text = "in 0 games"
+            
+            if let pastGames = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].pastGames as [PastGame]? {
+                if let _ = pastGames.first as PastGame? {
+                    if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rKDA == -100 {
+                        if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames == 0 {
+                            cell.rKDALabel.text = "-"
+                            cell.rWinRateLabel.text = "-"
+                            cell.rCountedGamesLabel.text = "in 0 games"
+                        } else {
+                            cell.rKDALabel.text = "Perfect KDA!"
+                            cell.rWinRateLabel.text = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate!)
+                            cell.rCountedGamesLabel.text = String("in \(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames!) games")
+                        }
                     } else {
-                        cell.rKDALabel.text = "Perfect KDA!"
+                        cell.rKDALabel.text = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rKDA!)
                         cell.rWinRateLabel.text = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate!)
                         cell.rCountedGamesLabel.text = String("in \(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames!) games")
                     }
                 } else {
-                    cell.rKDALabel.text = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rKDA!)
-                    cell.rWinRateLabel.text = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate!)
-                    cell.rCountedGamesLabel.text = String("in \(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames!) games")
+                    cell.rKDALabel.text = "-"
+                    cell.rWinRateLabel.text = "-"
+                    cell.rCountedGamesLabel.text = "in 0 games"
                 }
-            } else {
-                cell.lastGameLabel.text = "-"
-                cell.rKDALabel.text = "-"
-                cell.rWinRateLabel.text = "-"
-                cell.rCountedGamesLabel.text = "in 0 games"
+                
             }
             
         
@@ -94,6 +102,19 @@ extension CurrentGameTeamCollectionViewCell: UICollectionViewDelegateFlowLayout,
             cell.spell1Image.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell1Image)")!)!)
             cell.spell2Image.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell2Image)")!)!)
             
+            let borderBottom = CALayer()
+            let borderWidth = CGFloat(3.0)
+            if parentIndex == 0 {
+                borderBottom.borderColor = UIColor(red: 148/255, green: 48/255, blue: 33/255, alpha: 1).CGColor
+            }
+            if parentIndex == 1 {
+                borderBottom.borderColor = UIColor(red: 27/255, green: 91/255, blue: 135/255, alpha: 1).CGColor
+            }
+            borderBottom.frame = CGRect(x: 0, y: cell.frame.height - 1.0, width: cell.frame.width , height: cell.frame.height - 1.0)
+            borderBottom.borderWidth = borderWidth
+            cell.layer.addSublayer(borderBottom)
+            cell.layer.masksToBounds = true
+            
             return cell
         }
         
@@ -110,7 +131,7 @@ extension CurrentGameTeamCollectionViewCell: UICollectionViewDelegateFlowLayout,
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.size.width-2, height: 40)
+        return CGSize(width: collectionView.frame.size.width, height: 40)
     }
     
 }
