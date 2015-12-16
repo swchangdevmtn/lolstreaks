@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		5404DA6F1C0D4FFB007D7E64 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5404DA6E1C0D4FFB007D7E64 /* AppDelegate.swift */; };
-		5404DA741C0D4FFB007D7E64 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5404DA721C0D4FFB007D7E64 /* Main.storyboard */; };
 		5404DA761C0D4FFB007D7E64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5404DA751C0D4FFB007D7E64 /* Assets.xcassets */; };
 		5404DA791C0D4FFB007D7E64 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5404DA771C0D4FFB007D7E64 /* LaunchScreen.storyboard */; };
 		5404DA8A1C0D5231007D7E64 /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5404DA891C0D5231007D7E64 /* NetworkController.swift */; };
 		5404DA8C1C0D5284007D7E64 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5404DA8B1C0D5284007D7E64 /* Player.swift */; };
 		5404DA8E1C0D528E007D7E64 /* CurrentGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5404DA8D1C0D528E007D7E64 /* CurrentGame.swift */; };
 		5404DA901C0D5295007D7E64 /* PastGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5404DA8F1C0D5295007D7E64 /* PastGame.swift */; };
+		54157D201C213C5800F9440C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54157D1F1C213C5800F9440C /* Main.storyboard */; };
 		542758541C1F3ABF009B7A9F /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542758531C1F3ABF009B7A9F /* Stats.swift */; };
 		5436CC3A1C10DB3600B30F08 /* CurrentGamePlayerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5436CC391C10DB3600B30F08 /* CurrentGamePlayerCollectionViewCell.swift */; };
 		5436CC3C1C10DB4900B30F08 /* CurrentGameTeamCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5436CC3B1C10DB4900B30F08 /* CurrentGameTeamCollectionViewCell.swift */; };
@@ -34,7 +34,6 @@
 /* Begin PBXFileReference section */
 		5404DA6B1C0D4FFB007D7E64 /* lolstreaks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lolstreaks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5404DA6E1C0D4FFB007D7E64 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5404DA731C0D4FFB007D7E64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5404DA751C0D4FFB007D7E64 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5404DA781C0D4FFB007D7E64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5404DA7A1C0D4FFB007D7E64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -42,6 +41,7 @@
 		5404DA8B1C0D5284007D7E64 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Player.swift; path = ../Player.swift; sourceTree = "<group>"; };
 		5404DA8D1C0D528E007D7E64 /* CurrentGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CurrentGame.swift; path = ../CurrentGame.swift; sourceTree = "<group>"; };
 		5404DA8F1C0D5295007D7E64 /* PastGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PastGame.swift; path = ../PastGame.swift; sourceTree = "<group>"; };
+		54157D1F1C213C5800F9440C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		542758531C1F3ABF009B7A9F /* Stats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stats.swift; sourceTree = "<group>"; };
 		5436CC391C10DB3600B30F08 /* CurrentGamePlayerCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentGamePlayerCollectionViewCell.swift; sourceTree = "<group>"; };
 		5436CC3B1C10DB4900B30F08 /* CurrentGameTeamCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentGameTeamCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -91,10 +91,10 @@
 		5404DA6D1C0D4FFB007D7E64 /* lolstreaks */ = {
 			isa = PBXGroup;
 			children = (
+				54157D1F1C213C5800F9440C /* Main.storyboard */,
 				543771431C15D9C7009F2E4F /* SwiftyJSON.swift */,
 				5404DA891C0D5231007D7E64 /* NetworkController.swift */,
 				5404DA6E1C0D4FFB007D7E64 /* AppDelegate.swift */,
-				5404DA721C0D4FFB007D7E64 /* Main.storyboard */,
 				5404DA751C0D4FFB007D7E64 /* Assets.xcassets */,
 				5404DA771C0D4FFB007D7E64 /* LaunchScreen.storyboard */,
 				5404DA7A1C0D4FFB007D7E64 /* Info.plist */,
@@ -209,9 +209,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54157D201C213C5800F9440C /* Main.storyboard in Resources */,
 				5404DA791C0D4FFB007D7E64 /* LaunchScreen.storyboard in Resources */,
 				5404DA761C0D4FFB007D7E64 /* Assets.xcassets in Resources */,
-				5404DA741C0D4FFB007D7E64 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,14 +247,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		5404DA721C0D4FFB007D7E64 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5404DA731C0D4FFB007D7E64 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		5404DA771C0D4FFB007D7E64 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

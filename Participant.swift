@@ -30,9 +30,13 @@ class Participant {
     
     //possible no game history
     var pastGames: [PastGame]?
-    var rKDA: Double?
-    var rWinrate: Int?
+    var pastGamesCounted: [PastGame]?
     
+    var rKDA: Float?
+    var rWinrate: Float?
+    var rCountedGames: Int?
+    var rHotStreak: Bool?
+    var rColdStreak: Bool?
     
     init(teamId: Int, spell1Id: Int, spell2Id: Int, championId: Int, profileIconId: Int, summonerName: String, summonerId: Int) {
         self.teamId = teamId

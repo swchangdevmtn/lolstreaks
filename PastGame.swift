@@ -23,10 +23,9 @@ class PastGame {
     var spell1Id: Int
     var spell2Id: Int
     var createDate: Int
-    var gameLevel: Int
     var stats: Stats?
     
-    init(gameId: Int, invalid: Bool, gameMode: String, gameType: String, subType: String, mapId: Int, teamId: Int, championId: Int, spell1Id: Int, spell2Id: Int, createDate: Int, gameLevel: Int) {
+    init(gameId: Int, invalid: Bool, gameMode: String, gameType: String, subType: String, mapId: Int, teamId: Int, championId: Int, spell1Id: Int, spell2Id: Int, createDate: Int) {
         
         self.gameId = gameId
         self.invalid = invalid
@@ -39,7 +38,6 @@ class PastGame {
         self.spell1Id = spell1Id
         self.spell2Id = spell2Id
         self.createDate = createDate
-        self.gameLevel = gameLevel
     }
     
     init(json:[String: AnyObject]) {
@@ -53,8 +51,7 @@ class PastGame {
             let championId = json["championId"] as? Int,
             let spell1Id = json["spell1"] as? Int,
             let spell2Id = json["spell2"] as? Int,
-            let createDate = json["createDate"] as? Int,
-            let gameLevel = json["level"] as? Int else {
+            let createDate = json["createDate"] as? Int else {
                 self.gameId = -1
                 self.invalid = false
                 self.gameMode = ""
@@ -66,7 +63,6 @@ class PastGame {
                 self.spell1Id = -1
                 self.spell2Id = -1
                 self.createDate = -1
-                self.gameLevel = -1
                 return
         }
         self.gameId = gameId
@@ -80,7 +76,6 @@ class PastGame {
         self.spell1Id = spell1Id
         self.spell2Id = spell2Id
         self.createDate = createDate
-        self.gameLevel = gameLevel
     }
 }
 

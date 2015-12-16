@@ -18,5 +18,10 @@ class CurrentGamePlayerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var spell1Image: UIImageView!
     @IBOutlet weak var spell2Image: UIImageView!
     
+    @IBOutlet weak var lastGameLabel: UILabel!
 
+    @IBOutlet weak var rKDALabel: UILabel!
+    @IBOutlet weak var rWinRateLabel: UILabel!
+    @IBOutlet weak var rCountedGamesLabel: UILabel!
+    @IBOutlet weak var streakImage: UIImageView!
 }

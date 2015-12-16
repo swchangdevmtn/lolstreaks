@@ -49,6 +49,7 @@ class CurrentGameController {
                         return
                     }
                     let json = JSON(data: data)
+                    self.allIds = []
                     self.allParticipants = []
                     self.teamblue = []
                     self.teamred = []
@@ -136,6 +137,7 @@ class CurrentGameController {
                                     self.teamred = self.allParticipants.filter({$0.teamId == 200})
                                     self.allteams.append(self.teamred)
                                     self.allteams.append(self.teamblue)
+                                    
                                     print("---REDTEAM---")
                                     for i in self.teamred {
                                         let participant = i

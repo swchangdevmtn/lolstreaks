@@ -10,6 +10,10 @@ import UIKit
 
 class SearchViewController: UIViewController {
 
+    var bgView: UIImageView!
+    
+    @IBOutlet weak var statusLabel: UILabel!
+    
     @IBOutlet weak var regionTextField: UITextField!
     
     @IBOutlet weak var usernameTextField: UITextField!
@@ -19,12 +23,34 @@ class SearchViewController: UIViewController {
         PlayerController.sharedInstance.searchForPlayer(regionTextField.text!, playerName: usernameTextField.text!) { (success) -> Void in
             if success {
                 //3 calls
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.statusLabel.text = "player found, searching for current game..."
+                })
                 CurrentGameController.sharedInstance.searchForCurrentGame(self.regionTextField.text!, summonerId: PlayerController.sharedInstance.currentPlayer.summonerID, completion: { (success) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    if success {
                         if CurrentGameController.sharedInstance.currentGame.gameId != 0 && CurrentGameController.sharedInstance.currentGame.gameId != -1 {
-                            self.performSegueWithIdentifier("searchToCollection", sender: self.self)
-                            print("success")
-                        } else {
+                            print("current game success")
+                            
+                            NSThread.sleepForTimeInterval(3)
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                self.statusLabel.text = "current game found, please wait..."
+                            })
+                            //13 requests
+                            let allIds = CurrentGameController.sharedInstance.allIds
+                            for id in allIds {
+                                NSThread.sleepForTimeInterval(1)
+                                PastGameController.sharedInstance.searchForTenRecentGames(self.regionTextField.text!, summonerId: id, completion: { (success) -> Void in
+                                    print("past games appended to Player: \(id)")
+                                })
+                            }
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                self.performSegueWithIdentifier("searchToCollection", sender: self)
+                            })
+                            
+                        }
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.statusLabel.text = " "
                             print("try again")
                             let noGameAlert = UIAlertController(title: "No game", message: "Player is currently not in a game", preferredStyle: .Alert)
                             noGameAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
@@ -32,8 +58,10 @@ class SearchViewController: UIViewController {
                                 self.performSegueWithIdentifier("alertToProfile", sender: self)
                             }))
                             self.presentViewController(noGameAlert, animated: true, completion: nil)
-                        }
-                    })
+                        })
+
+                    }
+
                 })
                 
             } else {
@@ -44,9 +72,15 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        statusLabel.text = " "
         
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        statusLabel.text = " "
+    }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
