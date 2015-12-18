@@ -37,17 +37,22 @@ class SearchViewController: UIViewController {
                             })
                             //13 requests
                             let allIds = CurrentGameController.sharedInstance.allIds
+                            var count = 0
                             for id in allIds {
+                                
                                 NSThread.sleepForTimeInterval(1)
                                 PastGameController.sharedInstance.searchForTenRecentGames(self.regionTextField.text!, summonerId: id, completion: { (success) -> Void in
-                                    print("past games appended to Player: \(id)")
-
+                                    if success {
+                                        print("past games appended to Player: \(id)")
+                                        count++
+                                        if count == CurrentGameController.sharedInstance.allParticipants.count {
+                                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                                self.performSegueWithIdentifier("searchToTeams", sender: self)
+                                            })
+                                        }
+                                    }
                                 })
                             }
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                self.performSegueWithIdentifier("searchToCollection", sender: self)
-                            })
-                            
                         }
                     } else {
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in

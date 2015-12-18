@@ -65,7 +65,7 @@ class PastGameController {
     func getRCountedGames(pastgames:[PastGame]) -> [PastGame] {
         var countedGames = [PastGame]()
         for game in pastgames {
-            if usedModes.contains(game.gameMode) && usedTypes.contains(game.gameType) && usedSubTypes.contains(game.subType) {
+            if usedModes.contains(game.gameMode) && usedTypes.contains(game.gameType) && usedSubTypes.contains(game.subType) && game.invalid == false {
                 countedGames.append(game)
             }
         }
