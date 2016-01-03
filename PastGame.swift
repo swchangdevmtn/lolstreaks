@@ -20,8 +20,12 @@ class PastGame {
     var teamId: Int
     var fellowPlayers: [PastPlayer]?
     var championId: Int
+    var championImg: String?
+    var championName: String?
     var spell1Id: Int
+    var spell1Img: String?
     var spell2Id: Int
+    var spell2Img: String?
     var createDate: Int
     var stats: Stats?
     

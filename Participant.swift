@@ -38,6 +38,11 @@ class Participant {
     var rHotStreak: Bool?
     var rColdStreak: Bool?
     
+    var rankSolo: String?
+    var rankSoloDiv: String?
+    var rankSoloWins: Int?
+    var rankSoloLosses: Int?
+    
     init(teamId: Int, spell1Id: Int, spell2Id: Int, championId: Int, profileIconId: Int, summonerName: String, summonerId: Int) {
         self.teamId = teamId
         self.spell1Id = spell1Id

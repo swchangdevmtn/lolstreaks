@@ -24,16 +24,8 @@ class PastGameController {
     
     func coldStreak(countedGames:[PastGame]) -> Bool {
         if countedGames.count >= 3 {
-            if countedGames[0].stats!.win == false {
-                if countedGames[1].stats!.win == false {
-                    if countedGames[2].stats!.win == false {
-                        return true
-                    } else {
-                        return false
-                    }
-                } else {
-                    return false
-                }
+            if countedGames[0].stats!.win == false && countedGames[1].stats!.win == false && countedGames[2].stats!.win == false {
+                return true
             } else {
                 return false
             }
@@ -44,16 +36,8 @@ class PastGameController {
     
     func hotStreak(countedGames:[PastGame]) -> Bool {
         if countedGames.count >= 3 {
-            if countedGames[0].stats!.win == true {
-                if countedGames[1].stats!.win == true {
-                    if countedGames[2].stats!.win == true {
-                        return true
-                    } else {
-                        return false
-                    }
-                } else {
-                    return false
-                }
+            if countedGames[0].stats!.win == true && countedGames[1].stats!.win == true && countedGames[2].stats!.win == true {
+                return true
             } else {
                 return false
             }
@@ -75,7 +59,7 @@ class PastGameController {
     func getRGameCount(pastgames:[PastGame]) -> Int {
         var allGames: Int = 0
         for game in pastgames {
-            if usedModes.contains(game.gameMode) && usedTypes.contains(game.gameType) && usedSubTypes.contains(game.subType) {
+            if usedModes.contains(game.gameMode) && usedTypes.contains(game.gameType) && usedSubTypes.contains(game.subType) && game.invalid == false {
                 allGames++
             }
         }
@@ -87,7 +71,7 @@ class PastGameController {
         var allDeaths: Float = 0
         var allAssists: Float = 0
         for game in pastgames {
-            if usedModes.contains(game.gameMode) && usedTypes.contains(game.gameType) && usedSubTypes.contains(game.subType) {
+            if usedModes.contains(game.gameMode) && usedTypes.contains(game.gameType) && usedSubTypes.contains(game.subType) && game.invalid == false {
                 
                 allKills += Float((game.stats?.championsKilled)!)
                 allDeaths += Float((game.stats?.numDeaths)!)
@@ -137,6 +121,38 @@ class PastGameController {
                             for pastGameDictionary in pastGameArray {
                                 let pastGame = PastGame(json: pastGameDictionary)
                                 print("past game: \(pastGame.gameId)")
+                                
+                                //champion info from Id value:
+                                let championId = pastGame.championId
+                                var championImage = ""
+                                var championName = ""
+                                if let championURL = NetworkController.champion(championId) as NSURL? {
+                                    if let championData = NSData(contentsOfURL: championURL) {
+                                        let json = JSON(data: championData)
+                                        championImage = json["image"]["full"].stringValue
+                                        championName = json["name"].stringValue
+                                        pastGame.championImg = championImage
+                                        pastGame.championName = championName
+                                    }
+                                }
+                                let spell1Id = pastGame.spell1Id
+                                var spell1Image = ""
+                                if let spell1URL = NetworkController.spell(spell1Id) as NSURL? {
+                                    if let spell1Data = NSData(contentsOfURL: spell1URL) {
+                                        let json = JSON(data: spell1Data)
+                                        spell1Image = json["image"]["full"].stringValue
+                                        pastGame.spell1Img = spell1Image
+                                    }
+                                }
+                                let spell2Id = pastGame.spell2Id
+                                var spell2Image = ""
+                                if let spell2URL = NetworkController.spell(spell2Id) as NSURL? {
+                                    if let spell2Data = NSData(contentsOfURL: spell2URL) {
+                                        let json = JSON(data: spell2Data)
+                                        spell2Image = json["image"]["full"].stringValue
+                                        pastGame.spell2Img = spell2Image
+                                    }
+                                }
                                 
                                 //custom games can have no players
                                 if let pastPlayerArray = pastGameDictionary["fellowPlayers"] as? [[String : AnyObject]] {
@@ -283,6 +299,8 @@ class PastGameController {
                         } else {
                             tenPastGamesForPlayer = [PastGame]()
                         }
+                    } else {
+                        completion(success: false)
                     }
                     for var i = 0; i < CurrentGameController.sharedInstance.allteams.count; i++ {
                         for var j = 0; j < CurrentGameController.sharedInstance.allteams[i].count; j++ {

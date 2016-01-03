@@ -25,6 +25,7 @@
 		546941561C1E623700EFDDF5 /* PastPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546941551C1E623700EFDDF5 /* PastPlayer.swift */; };
 		54B2720C1C17961E0090A47A /* CurrentGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B2720B1C17961E0090A47A /* CurrentGameController.swift */; };
 		54B272101C179E6F0090A47A /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B2720F1C179E6F0090A47A /* Participant.swift */; };
+		54B606C61C24A841003A6AC1 /* PlayerDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B606C51C24A841003A6AC1 /* PlayerDetailTableViewCell.swift */; };
 		54D40B731C0E9A0900B0AD4F /* RankedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B721C0E9A0900B0AD4F /* RankedGame.swift */; };
 		54D40B751C0F507700B0AD4F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B741C0F507700B0AD4F /* SearchViewController.swift */; };
 		54D40B791C0F50AE00B0AD4F /* PlayerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B781C0F50AE00B0AD4F /* PlayerDetailViewController.swift */; };
@@ -51,6 +52,7 @@
 		546941551C1E623700EFDDF5 /* PastPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastPlayer.swift; sourceTree = "<group>"; };
 		54B2720B1C17961E0090A47A /* CurrentGameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentGameController.swift; sourceTree = "<group>"; };
 		54B2720F1C179E6F0090A47A /* Participant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Participant.swift; path = ../Participant.swift; sourceTree = "<group>"; };
+		54B606C51C24A841003A6AC1 /* PlayerDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailTableViewCell.swift; sourceTree = "<group>"; };
 		54D40B721C0E9A0900B0AD4F /* RankedGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankedGame.swift; sourceTree = "<group>"; };
 		54D40B741C0F507700B0AD4F /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		54D40B781C0F50AE00B0AD4F /* PlayerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailViewController.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				54157D251C23294800F9440C /* CurrGameViewController.swift */,
 				54157D291C232B7100F9440C /* CurrGamePlayerCollectionViewCell.swift */,
 				54D40B781C0F50AE00B0AD4F /* PlayerDetailViewController.swift */,
+				54B606C51C24A841003A6AC1 /* PlayerDetailTableViewCell.swift */,
 			);
 			name = ViewControllers;
 			path = lolstreaks;
@@ -218,6 +221,7 @@
 				5404DA901C0D5295007D7E64 /* PastGame.swift in Sources */,
 				542758541C1F3ABF009B7A9F /* Stats.swift in Sources */,
 				54D40B751C0F507700B0AD4F /* SearchViewController.swift in Sources */,
+				54B606C61C24A841003A6AC1 /* PlayerDetailTableViewCell.swift in Sources */,
 				543771441C15D9C7009F2E4F /* SwiftyJSON.swift in Sources */,
 				5404DA8E1C0D528E007D7E64 /* CurrentGame.swift in Sources */,
 				54D40B731C0E9A0900B0AD4F /* RankedGame.swift in Sources */,
@@ -334,10 +338,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 0;
 				INFOPLIST_FILE = lolstreaks/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.swc.lolstreaks;
+				PRODUCT_BUNDLE_IDENTIFIER = com.swc.lolstreaks2016;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -346,10 +353,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 0;
 				INFOPLIST_FILE = lolstreaks/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.swc.lolstreaks;
+				PRODUCT_BUNDLE_IDENTIFIER = com.swc.lolstreaks2016;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

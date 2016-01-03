@@ -55,6 +55,7 @@ class PlayerDetailViewController: UIViewController, UITableViewDataSource, UITab
         selectedPlayer = player
         let version = CurrentGameController.sharedInstance.ddragonVersion
         profileIconImage.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/profileicon/\(player.profileIconId).png")!)!)
+        
         animateTable()
     }
     
@@ -68,9 +69,93 @@ class PlayerDetailViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("pastGameCell")
-        cell?.textLabel!.text = "\(selectedPlayer.pastGames![indexPath.row].gameId)"
+        let cell = tableView.dequeueReusableCellWithIdentifier("pastGameCell") as? PlayerDetailTableViewCell
+        let version = CurrentGameController.sharedInstance.ddragonVersion
+        let championImg = selectedPlayer.pastGames![indexPath.row].championImg!
+        cell?.championImage.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/champion/\(championImg)")!)!)
+        let spell1Img = selectedPlayer.pastGames![indexPath.row].spell1Img!
+        let spell2Img = selectedPlayer.pastGames![indexPath.row].spell2Img!
+        cell?.spell1Img.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell1Img)")!)!)
+        cell?.spell2Img.image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell2Img)")!)!)
+        cell?.levelLabel.text = "\(selectedPlayer.pastGames![indexPath.row].stats!.level)"
+        
+        if selectedPlayer.pastGames![indexPath.row].stats?.item0 == 0 {
+            cell?.item0.image = UIImage(named: "blank")
+        } else {
+            let item0Int = selectedPlayer.pastGames?[indexPath.row].stats?.item0 as Int?
+            if let item0Data = NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/item/\(item0Int!).png")!) {
+                cell?.item0.image = UIImage(data: item0Data)
+            } else {
+                cell?.item0.image = UIImage(named: "blank")
+            }
+        }
+        
+        if selectedPlayer.pastGames![indexPath.row].stats?.item1 == 0 {
+            cell?.item1.image = UIImage(named: "blank")
+        } else {
+            let item1Int = selectedPlayer.pastGames?[indexPath.row].stats?.item1 as Int?
+            if let item1Data = NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/item/\(item1Int!).png")!) {
+                cell?.item1.image = UIImage(data: item1Data)
+            } else {
+                cell?.item1.image = UIImage(named: "blank")
+            }
+        }
+        
+        if selectedPlayer.pastGames![indexPath.row].stats?.item2 == 0 {
+            cell?.item2.image = UIImage(named: "blank")
+        } else {
+            let item2Int = selectedPlayer.pastGames?[indexPath.row].stats?.item2 as Int?
+            if let item2Data = NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/item/\(item2Int!).png")!) {
+                cell?.item2.image = UIImage(data: item2Data)
+            } else {
+                cell?.item2.image = UIImage(named: "blank")
+            }
+        }
+        
+        if selectedPlayer.pastGames![indexPath.row].stats?.item3 == 0 {
+            cell?.item3.image = UIImage(named: "blank")
+        } else {
+            let item3Int = selectedPlayer.pastGames?[indexPath.row].stats?.item3 as Int?
+            if let item3Data = NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/item/\(item3Int!).png")!) {
+                cell?.item3.image = UIImage(data: item3Data)
+            } else {
+                cell?.item3.image = UIImage(named: "blank")
+            }
+        }
+        
+        if selectedPlayer.pastGames![indexPath.row].stats?.item4 == 0 {
+            cell?.item4.image = UIImage(named: "blank")
+        } else {
+            let item4Int = selectedPlayer.pastGames?[indexPath.row].stats?.item4 as Int?
+            if let item4Data = NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/item/\(item4Int!).png")!) {
+                cell?.item4.image = UIImage(data: item4Data)
+            } else {
+                cell?.item4.image = UIImage(named: "blank")
+            }
+        }
+        
+        if selectedPlayer.pastGames![indexPath.row].stats?.item5 == 0 {
+            cell?.item5.image = UIImage(named: "blank")
+        } else {
+            let item5Int = selectedPlayer.pastGames?[indexPath.row].stats?.item5 as Int?
+            if let item5Data = NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/item/\(item5Int!).png")!) {
+                cell?.item5.image = UIImage(data: item5Data)
+            } else {
+                cell?.item5.image = UIImage(named: "blank")
+            }
+        }
+        
+        if selectedPlayer.pastGames![indexPath.row].stats?.item6 == 0 {
+            cell?.item6.image = UIImage(named: "blank")
+        } else {
+            let item6Int = selectedPlayer.pastGames?[indexPath.row].stats?.item6 as Int?
+            if let item6Data = NSData(contentsOfURL: NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/item/\(item6Int!).png")!) {
+                cell?.item6.image = UIImage(data: item6Data)
+            } else {
+                cell?.item6.image = UIImage(named: "blank")
+            }
+        }
+        
         return cell!
     }
-
 }

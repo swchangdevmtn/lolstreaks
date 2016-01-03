@@ -30,7 +30,7 @@ class SearchViewController: UIViewController {
                     if success {
                         if CurrentGameController.sharedInstance.currentGame.gameId != 0 && CurrentGameController.sharedInstance.currentGame.gameId != -1 {
                             print("current game success")
-                            
+                            // MARK: Sleep
                             NSThread.sleepForTimeInterval(3)
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                 self.statusLabel.text = "current game found, please wait..."
@@ -39,10 +39,13 @@ class SearchViewController: UIViewController {
                             let allIds = CurrentGameController.sharedInstance.allIds
                             var count = 0
                             for id in allIds {
-                                
+                                // MARK: sleep 2
                                 NSThread.sleepForTimeInterval(1)
                                 PastGameController.sharedInstance.searchForTenRecentGames(self.regionTextField.text!, summonerId: id, completion: { (success) -> Void in
                                     if success {
+                                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                            self.statusLabel.text = "\(id): game history added"
+                                        })
                                         print("past games appended to Player: \(id)")
                                         count++
                                         if count == CurrentGameController.sharedInstance.allParticipants.count {

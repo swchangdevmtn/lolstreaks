@@ -132,7 +132,7 @@ extension CurrGameViewController: UICollectionViewDataSource, UICollectionViewDe
                         cell.winrateLabel.text = "-"
                         cell.numberOfGamesLabel.text = "in 0 games"
                     } else {
-                        cell.kdaLabel.text = "Perfect KDA!"
+                        cell.kdaLabel.text = "Perfect!"
                         cell.winrateLabel.text = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate!)
                         cell.numberOfGamesLabel.text = String("in \(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames!) games")
                     }

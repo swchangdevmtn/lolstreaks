@@ -23,6 +23,11 @@ class CurrentGameController {
     var levelDictionary: NSDictionary = [:]
     var savedRegion: String = ""
     
+    var rankArray = []
+    var rankDictionary: NSDictionary = [:]
+    var rankEntriesArray = []
+    var rankEntriesDictionary: NSDictionary = [:]
+    
     func searchForDdragonVersion(region: String, completion:(success: Bool) -> Void) {
         if let ddragonVersionURL = NetworkController.ddragonVersion(region) as NSURL? {
             NetworkController.dataAtURL(ddragonVersionURL, completion: { (resultData) -> Void in
@@ -81,9 +86,12 @@ class CurrentGameController {
                                 self.allIds.append(participant.summonerId)
                             }
                             print("gameIds: \(idString)")
+                            
+                            
+                            
                             self.levelDictionary = [:]
                             let levelURL = NetworkController.searchForLevels(region, ids: idString) as NSURL?
-
+                            
                             NetworkController.dataAtURL(levelURL!, completion: { (resultData) -> Void in
                                 do {
                                     let resultsAnyObject = try NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments)
@@ -154,6 +162,9 @@ class CurrentGameController {
                                     completion(success: false)
                                 }
                             })
+                        }
+                        else {
+                            completion(success: false)
                         }
                     } catch {
                         completion(success: false)
