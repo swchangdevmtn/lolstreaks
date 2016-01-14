@@ -21,14 +21,23 @@
 		5436CC401C10E15300B30F08 /* TeamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5436CC3F1C10E15300B30F08 /* TeamController.swift */; };
 		543771441C15D9C7009F2E4F /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543771431C15D9C7009F2E4F /* SwiftyJSON.swift */; };
 		5444D4C41C154430005320EF /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5444D4C31C154430005320EF /* PlayerController.swift */; };
+		54509D581C3CD3F200EFCBFC /* RankSolo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54509D571C3CD3F200EFCBFC /* RankSolo.swift */; };
 		546941541C1E579C00EFDDF5 /* PastGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546941531C1E579C00EFDDF5 /* PastGameController.swift */; };
 		546941561C1E623700EFDDF5 /* PastPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546941551C1E623700EFDDF5 /* PastPlayer.swift */; };
+		546DDBF11C4816AA00599D8A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 546DDBF01C4816AA00599D8A /* Security.framework */; };
+		546DDBF31C4816B100599D8A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 546DDBF21C4816B100599D8A /* SystemConfiguration.framework */; };
+		546DDBF51C4816B600599D8A /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 546DDBF41C4816B600599D8A /* CFNetwork.framework */; };
 		54B2720C1C17961E0090A47A /* CurrentGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B2720B1C17961E0090A47A /* CurrentGameController.swift */; };
 		54B272101C179E6F0090A47A /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B2720F1C179E6F0090A47A /* Participant.swift */; };
 		54B606C61C24A841003A6AC1 /* PlayerDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B606C51C24A841003A6AC1 /* PlayerDetailTableViewCell.swift */; };
 		54D40B731C0E9A0900B0AD4F /* RankedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B721C0E9A0900B0AD4F /* RankedGame.swift */; };
 		54D40B751C0F507700B0AD4F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B741C0F507700B0AD4F /* SearchViewController.swift */; };
 		54D40B791C0F50AE00B0AD4F /* PlayerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B781C0F50AE00B0AD4F /* PlayerDetailViewController.swift */; };
+		54DA7D9D1C4816E400266809 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54DA7D9C1C4816E400266809 /* Firebase.framework */; };
+		54DA7D9F1C4816EC00266809 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 54DA7D9E1C4816EC00266809 /* libicucore.tbd */; };
+		54DA7DA11C4816F300266809 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 54DA7DA01C4816F300266809 /* libc++.tbd */; };
+		54DA7DA31C48189000266809 /* FireBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DA7DA21C48189000266809 /* FireBaseController.swift */; };
+		54DA7DA51C48215300266809 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DA7DA41C48215300266809 /* Reachability.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,14 +57,23 @@
 		5436CC3F1C10E15300B30F08 /* TeamController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamController.swift; sourceTree = "<group>"; };
 		543771431C15D9C7009F2E4F /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		5444D4C31C154430005320EF /* PlayerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayerController.swift; path = ../PlayerController.swift; sourceTree = "<group>"; };
+		54509D571C3CD3F200EFCBFC /* RankSolo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankSolo.swift; sourceTree = "<group>"; };
 		546941531C1E579C00EFDDF5 /* PastGameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastGameController.swift; sourceTree = "<group>"; };
 		546941551C1E623700EFDDF5 /* PastPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastPlayer.swift; sourceTree = "<group>"; };
+		546DDBF01C4816AA00599D8A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		546DDBF21C4816B100599D8A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		546DDBF41C4816B600599D8A /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		54B2720B1C17961E0090A47A /* CurrentGameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentGameController.swift; sourceTree = "<group>"; };
 		54B2720F1C179E6F0090A47A /* Participant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Participant.swift; path = ../Participant.swift; sourceTree = "<group>"; };
 		54B606C51C24A841003A6AC1 /* PlayerDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailTableViewCell.swift; sourceTree = "<group>"; };
 		54D40B721C0E9A0900B0AD4F /* RankedGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankedGame.swift; sourceTree = "<group>"; };
 		54D40B741C0F507700B0AD4F /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		54D40B781C0F50AE00B0AD4F /* PlayerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailViewController.swift; sourceTree = "<group>"; };
+		54DA7D9C1C4816E400266809 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
+		54DA7D9E1C4816EC00266809 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		54DA7DA01C4816F300266809 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		54DA7DA21C48189000266809 /* FireBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireBaseController.swift; sourceTree = "<group>"; };
+		54DA7DA41C48215300266809 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +81,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54DA7DA11C4816F300266809 /* libc++.tbd in Frameworks */,
+				54DA7D9F1C4816EC00266809 /* libicucore.tbd in Frameworks */,
+				54DA7D9D1C4816E400266809 /* Firebase.framework in Frameworks */,
+				546DDBF51C4816B600599D8A /* CFNetwork.framework in Frameworks */,
+				546DDBF31C4816B100599D8A /* SystemConfiguration.framework in Frameworks */,
+				546DDBF11C4816AA00599D8A /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +96,12 @@
 		5404DA621C0D4FFB007D7E64 = {
 			isa = PBXGroup;
 			children = (
+				54DA7DA01C4816F300266809 /* libc++.tbd */,
+				54DA7D9E1C4816EC00266809 /* libicucore.tbd */,
+				54DA7D9C1C4816E400266809 /* Firebase.framework */,
+				546DDBF41C4816B600599D8A /* CFNetwork.framework */,
+				546DDBF21C4816B100599D8A /* SystemConfiguration.framework */,
+				546DDBF01C4816AA00599D8A /* Security.framework */,
 				5404DA821C0D50B3007D7E64 /* Model */,
 				54D40BA01C0FA71F00B0AD4F /* ModelController */,
 				54D40B7A1C0F50BA00B0AD4F /* ViewControllers */,
@@ -91,6 +121,7 @@
 		5404DA6D1C0D4FFB007D7E64 /* lolstreaks */ = {
 			isa = PBXGroup;
 			children = (
+				54DA7DA41C48215300266809 /* Reachability.swift */,
 				54157D211C21C71B00F9440C /* Main.storyboard */,
 				543771431C15D9C7009F2E4F /* SwiftyJSON.swift */,
 				5404DA891C0D5231007D7E64 /* NetworkController.swift */,
@@ -98,6 +129,7 @@
 				5404DA751C0D4FFB007D7E64 /* Assets.xcassets */,
 				5404DA771C0D4FFB007D7E64 /* LaunchScreen.storyboard */,
 				5404DA7A1C0D4FFB007D7E64 /* Info.plist */,
+				54DA7DA21C48189000266809 /* FireBaseController.swift */,
 			);
 			path = lolstreaks;
 			sourceTree = "<group>";
@@ -112,6 +144,7 @@
 				546941551C1E623700EFDDF5 /* PastPlayer.swift */,
 				542758531C1F3ABF009B7A9F /* Stats.swift */,
 				54D40B721C0E9A0900B0AD4F /* RankedGame.swift */,
+				54509D571C3CD3F200EFCBFC /* RankSolo.swift */,
 			);
 			name = Model;
 			path = lolstreaks;
@@ -228,10 +261,13 @@
 				5444D4C41C154430005320EF /* PlayerController.swift in Sources */,
 				5404DA6F1C0D4FFB007D7E64 /* AppDelegate.swift in Sources */,
 				54D40B791C0F50AE00B0AD4F /* PlayerDetailViewController.swift in Sources */,
+				54DA7DA31C48189000266809 /* FireBaseController.swift in Sources */,
 				54B272101C179E6F0090A47A /* Participant.swift in Sources */,
 				54157D2A1C232B7100F9440C /* CurrGamePlayerCollectionViewCell.swift in Sources */,
 				54B2720C1C17961E0090A47A /* CurrentGameController.swift in Sources */,
+				54DA7DA51C48215300266809 /* Reachability.swift in Sources */,
 				5436CC401C10E15300B30F08 /* TeamController.swift in Sources */,
+				54509D581C3CD3F200EFCBFC /* RankSolo.swift in Sources */,
 				5404DA8A1C0D5231007D7E64 /* NetworkController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,6 +375,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 0;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = lolstreaks/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -354,6 +394,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 0;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = lolstreaks/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -19,74 +19,100 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var usernameTextField: UITextField!
     
     @IBAction func searchButtonTapped(sender: AnyObject) {
-        //1
-        PlayerController.sharedInstance.searchForPlayer(regionTextField.text!.lowercaseString, playerName: usernameTextField.text!) { (success) -> Void in
-            if success {
-                //3 calls
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.statusLabel.text = "player found, searching for current game..."
-                })
-                CurrentGameController.sharedInstance.searchForCurrentGame(self.regionTextField.text!, summonerId: PlayerController.sharedInstance.currentPlayer.summonerID, completion: { (success) -> Void in
-                    if success {
-                        if CurrentGameController.sharedInstance.currentGame.gameId != 0 && CurrentGameController.sharedInstance.currentGame.gameId != -1 {
-                            print("current game success")
-                            // MARK: Sleep
-                            NSThread.sleepForTimeInterval(3)
+        if Reachability.isConnectedToNetwork() == false {
+            print("Internet connection FAILED")
+            let noInternetAlert = UIAlertController(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", preferredStyle: .Alert)
+            noInternetAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+            self.presentViewController(noInternetAlert, animated: true, completion: nil)
+        } else {
+            FireBaseController.dataAtEndPoint("apiKey") { (data) -> Void in
+                if let key = data as? String {
+                    CurrentGameController.sharedInstance.ApiKey = key
+                    //1
+                    PlayerController.sharedInstance.searchForPlayer(self.regionTextField.text!.lowercaseString, playerName: self.usernameTextField.text!) { (success) -> Void in
+                        if success {
+                            //4 calls
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                self.statusLabel.text = "current game found, please wait..."
+                                self.statusLabel.text = "player found, searching for current game..."
                             })
-                            //13 requests
-                            let allIds = CurrentGameController.sharedInstance.allIds
-                            var count = 0
-                            for id in allIds {
-                                // MARK: sleep 2
-                                NSThread.sleepForTimeInterval(1)
-                                PastGameController.sharedInstance.searchForTenRecentGames(self.regionTextField.text!, summonerId: id, completion: { (success) -> Void in
-                                    if success {
+                            CurrentGameController.sharedInstance.searchForCurrentGame(self.regionTextField.text!, summonerId: PlayerController.sharedInstance.currentPlayer.summonerID, completion: { (success) -> Void in
+                                if success {
+                                    if CurrentGameController.sharedInstance.currentGame.gameId != 0 && CurrentGameController.sharedInstance.currentGame.gameId != -1 {
+                                        print("current game success")
+                                        // MARK: Sleep
+                                        NSThread.sleepForTimeInterval(3)
                                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                            self.statusLabel.text = "\(id): game history added"
+                                            self.statusLabel.text = "current game found, please wait..."
                                         })
-                                        print("past games appended to Player: \(id)")
-                                        count++
-                                        if count == CurrentGameController.sharedInstance.allParticipants.count {
-                                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                                self.performSegueWithIdentifier("searchToTeams", sender: self)
+                                        //14 requests
+                                        let allIds = CurrentGameController.sharedInstance.allIds
+                                        var count = 0
+                                        for id in allIds {
+                                            // MARK: sleep 2
+                                            NSThread.sleepForTimeInterval(1)
+                                            PastGameController.sharedInstance.searchForTenRecentGames(self.regionTextField.text!, summonerId: id, completion: { (success) -> Void in
+                                                if success {
+                                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                                        self.statusLabel.text = "\(id): game history added"
+                                                    })
+                                                    print("past games appended to Player: \(id)")
+                                                    count++
+                                                    if count == CurrentGameController.sharedInstance.allParticipants.count {
+                                                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                                            self.performSegueWithIdentifier("searchToTeams", sender: self)
+                                                        })
+                                                    }
+                                                }
                                             })
                                         }
                                     }
-                                })
-                            }
+                                } else {
+                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                        self.statusLabel.text = " "
+                                        print("try again")
+                                        let noGameAlert = UIAlertController(title: "No game", message: "Player is currently not in a game", preferredStyle: .Alert)
+                                        noGameAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+                                        noGameAlert.addAction(UIAlertAction(title: "Go to profile", style: .Default, handler: { (action) -> Void in
+                                            self.performSegueWithIdentifier("alertToProfile", sender: self)
+                                        }))
+                                        self.presentViewController(noGameAlert, animated: true, completion: nil)
+                                    })
+                                    
+                                }
+                                
+                            })
+                            
+                        } else {
+                            print("error")
+                            //alertcontroller
+                            let noPlayerAlert = UIAlertController(title: "No player", message: "No player found by that name", preferredStyle:  .Alert)
+                            noPlayerAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+                            self.presentViewController(noPlayerAlert, animated: true, completion: nil)
                         }
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.statusLabel.text = " "
-                            print("try again")
-                            let noGameAlert = UIAlertController(title: "No game", message: "Player is currently not in a game", preferredStyle: .Alert)
-                            noGameAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
-                            noGameAlert.addAction(UIAlertAction(title: "Go to profile", style: .Default, handler: { (action) -> Void in
-                                self.performSegueWithIdentifier("alertToProfile", sender: self)
-                            }))
-                            self.presentViewController(noGameAlert, animated: true, completion: nil)
-                        })
-
                     }
-
-                })
-                
-            } else {
-                print("error")
-                //alertcontroller
-                let noPlayerAlert = UIAlertController(title: "No player", message: "No player found by that name", preferredStyle:  .Alert)
-                noPlayerAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
-                self.presentViewController(noPlayerAlert, animated: true, completion: nil)
+                } else {
+                    print("Firebase connection FAILED")
+                    let noInternetAlert = UIAlertController(title: "No Server Connection", message: "Servers are currently down or busy, please try again later.", preferredStyle: .Alert)
+                    noInternetAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+                    self.presentViewController(noInternetAlert, animated: true, completion: nil)
+                }
             }
+            
+            
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if Reachability.isConnectedToNetwork() == true {
+            print("Internet connection OK")
+        } else {
+            print("Internet connection FAILED")
+            let noInternetAlert = UIAlertController(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", preferredStyle: .Alert)
+            noInternetAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+            self.presentViewController(noInternetAlert, animated: true, completion: nil)
+        }
         statusLabel.text = " "
-        
         
     }
     

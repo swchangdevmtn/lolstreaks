@@ -11,7 +11,8 @@ import Foundation
 //items to update: API versions, regions
 
 class NetworkController {
-    static let ApiKey = "21f813d8-e04d-4065-8f3a-c7b595fd21a5"
+    static let ApiKey = CurrentGameController.sharedInstance.ApiKey
+    
     static func searchForId(region: String, searchTerm: String) -> NSURL {
         
         return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v1.4/summoner/by-name/\(searchTerm)?api_key=\(ApiKey)")!

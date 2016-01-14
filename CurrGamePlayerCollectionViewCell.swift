@@ -21,9 +21,16 @@ class CurrGamePlayerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var streakImage: UIImageView!
     @IBOutlet weak var winrateLabel: UILabel!
     @IBOutlet weak var kdaLabel: UILabel!
+    @IBOutlet weak var kdaAvgLabel: UILabel!
+    
     @IBOutlet weak var numberOfGamesLabel: UILabel!
     
     @IBOutlet weak var rankImg: UIImageView!
-    @IBOutlet weak var rankLabel: UILabel!
+    @IBOutlet weak var rankDivLabel: UILabel!
+    @IBOutlet weak var rankSeriesLabel: UILabel!
+    @IBOutlet weak var rankSeriesProgress: UILabel!
+    
+    @IBOutlet weak var lpLabel: UILabel!
+    @IBOutlet weak var rankWinLossLabel: UILabel!
     
 }

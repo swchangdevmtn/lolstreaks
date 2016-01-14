@@ -35,6 +35,9 @@ class Participant {
     var rKDA: Float?
     var rWinrate: Float?
     var rCountedGames: Int?
+    var rKillAvg: Float?
+    var rDeathAvg: Float?
+    var rAssistAvg: Float?
     var rHotStreak: Bool?
     var rColdStreak: Bool?
     
@@ -42,6 +45,8 @@ class Participant {
     var rankSoloDiv: String?
     var rankSoloWins: Int?
     var rankSoloLosses: Int?
+    var rankSoloLp: Int?
+    var rankSoloSeries: String?
     
     init(teamId: Int, spell1Id: Int, spell2Id: Int, championId: Int, profileIconId: Int, summonerName: String, summonerId: Int) {
         self.teamId = teamId

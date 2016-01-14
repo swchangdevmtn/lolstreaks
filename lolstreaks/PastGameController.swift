@@ -15,12 +15,12 @@ class PastGameController {
     var pastGames: [PastGame] = []
     
     //exceptions for:
-    //gameMode: ODIN (dominion), ARAM ?(maybe selectable), TUTORIAL, ONEFORALL, ASCENSION, KINGPORO, FIRSTBLOOD
+    //gameMode: ODIN (dominion), ARAM ?(maybe selectable), TUTORIAL, ONEFORALL, ASCENSION, KINGPORO, FIRSTBLOOD, ARAM
     //gameType: CUSTOM_GAME, TUTORIAL_GAME
-    //subType: BOT, BOT_3x3, ODIN_UNRANKED, FIRSTBLOOD_1x1, FIRSTBLOOD_2x2, SR_6x6 (hexakill), URF, URF_BOT, NIGHTMARE_BOT, ASCENSION, HEXAKILL (twisted treeline hexakill), KING_PORO, COUNTER_PICK, BILGEWATER
-    let usedModes = ["CLASSIC", "ARAM"]
+    //subType: BOT, BOT_3x3, ODIN_UNRANKED, FIRSTBLOOD_1x1, FIRSTBLOOD_2x2, SR_6x6 (hexakill), URF, URF_BOT, NIGHTMARE_BOT, ASCENSION, HEXAKILL (twisted treeline hexakill), KING_PORO, COUNTER_PICK, BILGEWATER,  ARAM_UNRANKED_5x5
+    let usedModes = ["CLASSIC"]
     let usedTypes = ["MATCHED_GAME"]
-    let usedSubTypes = ["NORMAL", "NORMAL_3x3", "ARAM_UNRANKED_5x5", "RANKED_SOLO_5x5", "RANKED_TEAM_3x3", "RANKED_TEAM_5x5", "CAP_5x5"]
+    let usedSubTypes = ["NORMAL", "NORMAL_3x3", "RANKED_SOLO_5x5", "RANKED_TEAM_3x3", "RANKED_TEAM_5x5", "CAP_5x5"]
     
     func coldStreak(countedGames:[PastGame]) -> Bool {
         if countedGames.count >= 3 {
@@ -66,7 +66,7 @@ class PastGameController {
         return allGames
     }
     
-    func getRKDA(pastgames:[PastGame]) -> Float {
+    func getRKDA(pastgames:[PastGame]) -> (rkda: Float, rkills: Float, rdeaths: Float, rassists: Float) {
         var allKills: Float = 0
         var allDeaths: Float = 0
         var allAssists: Float = 0
@@ -79,11 +79,11 @@ class PastGameController {
             }
         }
         if allDeaths == 0 {
-            return -100
+            return (-100, allKills, allDeaths, allAssists)
         } else {
             let rawValue = ((allKills + allAssists)/allDeaths)
         
-            return rawValue
+            return (rawValue, allKills, allDeaths, allAssists)
         }
     }
     
@@ -308,12 +308,21 @@ class PastGameController {
                                 CurrentGameController.sharedInstance.allteams[i][j].pastGames = tenPastGamesForPlayer
                                 if CurrentGameController.sharedInstance.allteams[i][j].pastGames!.count >= 1 {
                                     let rKDA = self.getRKDA(CurrentGameController.sharedInstance.allteams[i][j].pastGames!)
-                                    CurrentGameController.sharedInstance.allteams[i][j].rKDA = rKDA
+                                    CurrentGameController.sharedInstance.allteams[i][j].rKDA = rKDA.rkda
                                     let rWinRate = self.getRWinrate(CurrentGameController.sharedInstance.allteams[i][j].pastGames!)
                                     CurrentGameController.sharedInstance.allteams[i][j].rWinrate = rWinRate
                                     let rGameCount = self.getRGameCount(CurrentGameController.sharedInstance.allteams[i][j].pastGames!)
                                     CurrentGameController.sharedInstance.allteams[i][j].rCountedGames = rGameCount
                                     
+                                    if rGameCount >= 1 {
+                                        CurrentGameController.sharedInstance.allteams[i][j].rKillAvg = rKDA.rkills/Float(rGameCount)
+                                        CurrentGameController.sharedInstance.allteams[i][j].rDeathAvg = rKDA.rdeaths/Float(rGameCount)
+                                        CurrentGameController.sharedInstance.allteams[i][j].rAssistAvg = rKDA.rassists/Float(rGameCount)
+                                    } else {
+                                        CurrentGameController.sharedInstance.allteams[i][j].rKillAvg = 0
+                                        CurrentGameController.sharedInstance.allteams[i][j].rDeathAvg = 0
+                                        CurrentGameController.sharedInstance.allteams[i][j].rAssistAvg = 0
+                                    }
                                     
                                     let rCountedGames = self.getRCountedGames(CurrentGameController.sharedInstance.allteams[i][j].pastGames!)
                                     CurrentGameController.sharedInstance.allteams[i][j].pastGamesCounted = rCountedGames
