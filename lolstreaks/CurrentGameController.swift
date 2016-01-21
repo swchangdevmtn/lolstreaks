@@ -41,6 +41,45 @@ class CurrentGameController {
         }
     }
     
+    func searchForRanks(region: String, idString: String, completion:(success: Bool) -> Void) {
+        if let rankURL = NetworkController.playerRank(region, summonerId: idString) as NSURL? {
+            NetworkController.dataAtURL(rankURL, completion: { (resultData) -> Void in
+                do {
+                    let resultsAnyObject = try NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments)
+                    let idDictionary = resultsAnyObject as! NSDictionary
+                    for id in self.allIds {
+                        let idDictionaryKey = String(id)
+                        let idInt = id as Int
+                        var index = 0
+                        let rankForPlayer = RankSolo(id: idInt, rank: "Unranked", division: "", wins: 0, losses: 0, lp: 0, series: "none")
+                        if let idRankArray = idDictionary[idDictionaryKey] as? NSArray {
+                            while index < idRankArray.count {
+                                let queueType = idRankArray[index]["queue"] as? String
+                                if queueType == "RANKED_SOLO_5x5" {
+                                    rankForPlayer.rank = idRankArray[index]["tier"] as! String
+                                    rankForPlayer.division = idRankArray[index]["entries"]!![0]["division"] as! String
+                                    rankForPlayer.wins = idRankArray[index]["entries"]!![0]["wins"] as! Int
+                                    rankForPlayer.losses = idRankArray[index]["entries"]!![0]["losses"] as! Int
+                                    rankForPlayer.lp = idRankArray[index]["entries"]!![0]["leaguePoints"] as! Int
+                                    if let series = idRankArray[index]["entries"]!![0]["miniSeries"] as? NSDictionary {
+                                        rankForPlayer.series = series["progress"] as! String
+                                    }
+                                    self.soloRanks.append(rankForPlayer)
+                                    break
+                                }
+                                index++
+                            }
+                        }
+                    }
+                    completion(success: true)
+                } catch {
+                    completion(success: true)
+                }
+            })
+        }
+    }
+    
+
     func searchForCurrentGame(region: String, summonerId: Int, completion:(success: Bool) -> Void) {
         searchForDdragonVersion(region) { (success) -> Void in
             print(self.ddragonVersion)
@@ -85,36 +124,8 @@ class CurrentGameController {
                             }
                             print("gameIds: \(idString)")
                             
-                            let rankURL = NetworkController.playerRank(region, summonerId: idString) as NSURL?
-                            
-                            NetworkController.dataAtURL(rankURL!, completion: { (resultData) -> Void in
-                                do {
-                                    let resultsAnyObject = try NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments)
-                                    let idDictionary = resultsAnyObject as! NSDictionary
-                                    for id in self.allIds {
-                                        let idDictionaryKey = String(id)
-                                        let idInt = id as Int
-                                        var index = 0
-                                        let rankForPlayer = RankSolo(id: idInt, rank: "Unranked", division: "", wins: 0, losses: 0, lp: 0, series: "none")
-                                        if let idRankArray = idDictionary[idDictionaryKey] as? NSArray {
-                                            while index < idRankArray.count {
-                                                let queueType = idRankArray[index]["queue"] as? String
-                                                if queueType == "RANKED_SOLO_5x5" {
-                                                    rankForPlayer.rank = idRankArray[index]["tier"] as! String
-                                                    rankForPlayer.division = idRankArray[index]["entries"]!![0]["division"] as! String
-                                                    rankForPlayer.wins = idRankArray[index]["entries"]!![0]["wins"] as! Int
-                                                    rankForPlayer.losses = idRankArray[index]["entries"]!![0]["losses"] as! Int
-                                                    rankForPlayer.lp = idRankArray[index]["entries"]!![0]["leaguePoints"] as! Int
-                                                    if let series = idRankArray[index]["entries"]!![0]["miniSeries"] as? NSDictionary {
-                                                        rankForPlayer.series = series["progress"] as! String
-                                                    }
-                                                    self.soloRanks.append(rankForPlayer)
-                                                    break
-                                                }
-                                                index++
-                                            }
-                                        }
-                                    }
+                            self.searchForRanks(region, idString: idString, completion: { (success) -> Void in
+                                if success {
                                     self.levelDictionary = [:]
                                     let levelURL = NetworkController.searchForLevels(region, ids: idString) as NSURL?
                                     
@@ -167,18 +178,19 @@ class CurrentGameController {
                                                 participant.rankSoloLp = 0
                                                 participant.rankSoloSeries = "none"
                                                 
-                                                for playerRank in self.soloRanks {
-                                                    if participant.summonerId == playerRank.id {
-                                                        participant.rankSolo = playerRank.rank as String
-                                                        participant.rankSoloDiv = playerRank.division as String
-                                                        participant.rankSoloWins = playerRank.wins as Int
-                                                        participant.rankSoloLosses = playerRank.losses as Int
-                                                        participant.rankSoloLp = playerRank.lp as Int
-                                                        participant.rankSoloSeries = playerRank.series as String
-                                                        break
+                                                if self.soloRanks.count > 0 {
+                                                    for playerRank in self.soloRanks {
+                                                        if participant.summonerId == playerRank.id {
+                                                            participant.rankSolo = playerRank.rank as String
+                                                            participant.rankSoloDiv = playerRank.division as String
+                                                            participant.rankSoloWins = playerRank.wins as Int
+                                                            participant.rankSoloLosses = playerRank.losses as Int
+                                                            participant.rankSoloLp = playerRank.lp as Int
+                                                            participant.rankSoloSeries = playerRank.series as String
+                                                            break
+                                                        }
                                                     }
                                                 }
-                                                
                                                 // manually add champion info and spellImages data to participant
                                                 participant.spell1Img = spell1Image
                                                 participant.spell2Img = spell2Image
@@ -207,8 +219,6 @@ class CurrentGameController {
                                             completion(success: false)
                                         }
                                     })
-                                } catch {
-                                    completion(success: false)
                                 }
                             })
                         }

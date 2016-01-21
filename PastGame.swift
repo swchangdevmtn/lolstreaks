@@ -26,10 +26,10 @@ class PastGame {
     var spell1Img: String?
     var spell2Id: Int
     var spell2Img: String?
-    var createDate: Int
+    var createDate: Double
     var stats: Stats?
     
-    init(gameId: Int, invalid: Bool, gameMode: String, gameType: String, subType: String, mapId: Int, teamId: Int, championId: Int, spell1Id: Int, spell2Id: Int, createDate: Int) {
+    init(gameId: Int, invalid: Bool, gameMode: String, gameType: String, subType: String, mapId: Int, teamId: Int, championId: Int, spell1Id: Int, spell2Id: Int, createDate: Double) {
         
         self.gameId = gameId
         self.invalid = invalid
@@ -55,7 +55,7 @@ class PastGame {
             let championId = json["championId"] as? Int,
             let spell1Id = json["spell1"] as? Int,
             let spell2Id = json["spell2"] as? Int,
-            let createDate = json["createDate"] as? Int else {
+            let createDate = json["createDate"] as? Double else {
                 self.gameId = -1
                 self.invalid = false
                 self.gameMode = ""

@@ -19,7 +19,7 @@ class NetworkController {
     }
     
     static func searchForLevels(region: String, ids: String) -> NSURL {
-        return NSURL(string: "https://na.api.pvp.net/api/lol/na/v1.4/summoner/\(ids)?api_key=\(ApiKey)")!
+        return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v1.4/summoner/\(ids)?api_key=\(ApiKey)")!
     }
     
     static func currentGame(region: String, summonerId: Int) -> NSURL {
@@ -92,12 +92,12 @@ class NetworkController {
     
     //champion by ID
     static func champion(championId: Int) -> NSURL {
-        return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/\(championId)?champData=image&api_key=\(ApiKey)")!
+        return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/\(CurrentGameController.sharedInstance.savedRegion)/v1.2/champion/\(championId)?champData=image&api_key=\(ApiKey)")!
     }
     
     //summoner spells by ID
     static func spell(spellId: Int) -> NSURL {
-        return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/na/v1.2/summoner-spell/\(spellId)?spellData=image&api_key=\(ApiKey)")!
+        return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/\(CurrentGameController.sharedInstance.savedRegion)/v1.2/summoner-spell/\(spellId)?spellData=image&api_key=\(ApiKey)")!
     }
     
     //image examples:
