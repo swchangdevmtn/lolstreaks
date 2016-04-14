@@ -12,6 +12,7 @@ import Foundation
 
 class NetworkController {
     
+    //API from firebase
     static let ApiKey = CurrentGameController.sharedInstance.ApiKey
     
     static func searchForId(region: String, searchTerm: String) -> NSURL {
