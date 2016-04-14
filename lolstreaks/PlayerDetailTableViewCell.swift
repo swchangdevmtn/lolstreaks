@@ -10,13 +10,26 @@ import UIKit
 
 class PlayerDetailTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var winImage: UIImageView!
     
     @IBOutlet weak var championImage: UIImageView!
     @IBOutlet weak var levelLabel: UILabel!
     
     @IBOutlet weak var spell1Img: UIImageView!
     @IBOutlet weak var spell2Img: UIImageView!
+    
+    @IBOutlet weak var killLabel: UILabel!
+    @IBOutlet weak var deathLabel: UILabel!
+    @IBOutlet weak var assistLabel: UILabel!
+    
+    @IBOutlet weak var multikillLabel: UILabel!
+    @IBOutlet weak var goldLabel: UILabel!
+    @IBOutlet weak var csLabel: UILabel!
+    
+    @IBOutlet weak var createDateLabel: UILabel!
+    @IBOutlet weak var gameTypeLabel: UILabel!
+    @IBOutlet weak var gameSubTypeLabel: UILabel!
+    @IBOutlet weak var gameLengthLabel: UILabel!
+    @IBOutlet weak var winLabel: UILabel!
     
     //items
     @IBOutlet weak var item0: UIImageView!

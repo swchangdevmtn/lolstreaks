@@ -17,8 +17,11 @@ class Participant {
     var spell2Img: String?
     
     var championId: Int
+    var championSprite: Sprite?
     var championName: String?
     var championImg: String?
+    
+    var keystoneId: Int?
     
     var profileIconId: Int
     var summonerName: String
@@ -40,6 +43,8 @@ class Participant {
     var rAssistAvg: Float?
     var rHotStreak: Bool?
     var rColdStreak: Bool?
+    var rGoodDay: Bool?
+    var rBadDay: Bool?
     
     var rankSolo: String?
     var rankSoloDiv: String?

@@ -15,12 +15,76 @@ class PastGameController {
     var pastGames: [PastGame] = []
     
     //exceptions for:
-    //gameMode: ODIN (dominion), ARAM ?(maybe selectable), TUTORIAL, ONEFORALL, ASCENSION, KINGPORO, FIRSTBLOOD, ARAM
-    //gameType: CUSTOM_GAME, TUTORIAL_GAME
-    //subType: BOT, BOT_3x3, ODIN_UNRANKED, FIRSTBLOOD_1x1, FIRSTBLOOD_2x2, SR_6x6 (hexakill), URF, URF_BOT, NIGHTMARE_BOT, ASCENSION, HEXAKILL (twisted treeline hexakill), KING_PORO, COUNTER_PICK, BILGEWATER,  ARAM_UNRANKED_5x5
+    //gameMode: CLASSIC, ODIN, ARAM, TUTORIAL, ONEFORALL, ASCENSION, FIRSTBLOOD, KINGPORO
+    //gameType: CUSTOM_GAME, MATCHED_GAME, TUTORIAL_GAME
+    //subType: NONE, NORMAL, BOT, RANKED_SOLO_5x5, RANKED_PREMADE_3x3, RANKED_PREMADE_5x5, ODIN_UNRANKED, RANKED_TEAM_3x3, RANKED_TEAM_5x5, NORMAL_3x3, BOT_3x3, CAP_5x5, ARAM_UNRANKED_5x5, ONEFORALL_5x5, FIRSTBLOOD_1x1, FIRSTBLOOD_2x2, SR_6x6, URF, URF_BOT, NIGHTMARE_BOT, ASCENSION, HEXAKILL, KING_PORO, COUNTER_PICK, BILGEWATER
+    
     let usedModes = ["CLASSIC"]
     let usedTypes = ["MATCHED_GAME"]
-    let usedSubTypes = ["NORMAL", "NORMAL_3x3", "RANKED_SOLO_5x5", "RANKED_TEAM_3x3", "RANKED_TEAM_5x5", "CAP_5x5"]
+    let usedSubTypes = ["NORMAL", "RANKED_SOLO_5x5", "RANKED_PREMADE_3x3", "RANKED_PREMADE_5x5", "RANKED_TEAM_3x3", "RANKED_TEAM_5x5", "NORMAL_3x3", "CAP_5x5"]
+    
+    func badDay(countedGames:[PastGame]) -> Bool {
+        if countedGames.count >= 5 {
+            var totalGamesPast12hours = 0
+            var wins = 0
+            for game in countedGames {
+                //milliseconds
+                let currentTime: Double = NSDate().timeIntervalSince1970 * 1000
+                //12 hours = 43200000 ms
+                if currentTime - game.createDate > 43200000 {
+                    break
+                } else {
+                    if game.stats!.win == true {
+                        wins += 1
+                        totalGamesPast12hours += 1
+                    } else {
+                        totalGamesPast12hours += 1
+                    }
+                }
+            }
+            let winrate = Double(wins) / Double(totalGamesPast12hours)
+            if (totalGamesPast12hours >= 5 && winrate <= 0.3){
+                print("badDay out of \(totalGamesPast12hours)")
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
+    }
+    
+    func goodDay(countedGames:[PastGame]) -> Bool {
+        if countedGames.count >= 5 {
+            var totalGamesPast12hours = 0
+            var wins = 0
+            for game in countedGames {
+                //milliseconds
+                let currentTime: Double = NSDate().timeIntervalSince1970 * 1000
+                //12 hours = 43200000 ms
+                if currentTime - game.createDate > 43200000 {
+                    break
+                } else {
+                    if game.stats!.win == true {
+                        wins += 1
+                        totalGamesPast12hours += 1
+                    } else {
+                        totalGamesPast12hours += 1
+                    }
+                }
+            }
+            let winrate = Double(wins) / Double(totalGamesPast12hours)
+            if (totalGamesPast12hours >= 5 && winrate >= 0.7){
+                print("goodDay out of \(totalGamesPast12hours)")
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
+    }
+    
     
     func coldStreak(countedGames:[PastGame]) -> Bool {
         if countedGames.count >= 3 {
@@ -60,7 +124,7 @@ class PastGameController {
         var allGames: Int = 0
         for game in pastgames {
             if usedModes.contains(game.gameMode) && usedTypes.contains(game.gameType) && usedSubTypes.contains(game.subType) && game.invalid == false {
-                allGames++
+                allGames += 1
             }
         }
         return allGames
@@ -93,10 +157,10 @@ class PastGameController {
         for game in pastgames {
             if usedModes.contains(game.gameMode) && usedTypes.contains(game.gameType) && usedSubTypes.contains(game.subType) {
                 if game.stats!.win == true {
-                    allWins++
+                    allWins += 1
                 }
                 if game.stats!.win == false {
-                    allLosses++
+                    allLosses += 1
                 }
             }
         }
@@ -135,6 +199,8 @@ class PastGameController {
                                         pastGame.championName = championName
                                     }
                                 }
+                                
+                                //
                                 let spell1Id = pastGame.spell1Id
                                 var spell1Image = ""
                                 if let spell1URL = NetworkController.spell(spell1Id) as NSURL? {
@@ -302,8 +368,8 @@ class PastGameController {
                     } else {
                         completion(success: false)
                     }
-                    for var i = 0; i < CurrentGameController.sharedInstance.allteams.count; i++ {
-                        for var j = 0; j < CurrentGameController.sharedInstance.allteams[i].count; j++ {
+                    for i in 0 ..< CurrentGameController.sharedInstance.allteams.count {
+                        for j in 0 ..< CurrentGameController.sharedInstance.allteams[i].count {
                             if CurrentGameController.sharedInstance.allteams[i][j].summonerId == summonerId {
                                 CurrentGameController.sharedInstance.allteams[i][j].pastGames = tenPastGamesForPlayer
                                 if CurrentGameController.sharedInstance.allteams[i][j].pastGames!.count >= 1 {
@@ -330,10 +396,15 @@ class PastGameController {
                                     CurrentGameController.sharedInstance.allteams[i][j].rColdStreak = coldStreak
                                     let hotStreak = self.hotStreak(CurrentGameController.sharedInstance.allteams[i][j].pastGamesCounted!)
                                     CurrentGameController.sharedInstance.allteams[i][j].rHotStreak = hotStreak
+                                    let badDay = self.badDay(CurrentGameController.sharedInstance.allteams[i][j].pastGamesCounted!)
+                                    CurrentGameController.sharedInstance.allteams[i][j].rBadDay = badDay
+                                    let goodDay = self.goodDay(CurrentGameController.sharedInstance.allteams[i][j].pastGamesCounted!)
+                                    CurrentGameController.sharedInstance.allteams[i][j].rGoodDay = goodDay
                                     
                                 } else {
                                     print("new player, no games")
                                 }
+                                break
                             }
                         }
                     }

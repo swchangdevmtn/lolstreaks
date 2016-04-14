@@ -8,15 +8,15 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var regionButtonWidth: NSLayoutConstraint!
-    var bgView: UIImageView!
     var region = ""
-    var regionTitle = ""
     
+    @IBOutlet weak var logoConstraint: NSLayoutConstraint!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var regionButtonLabel: UIButton!
+    @IBOutlet weak var searchButtonLabel: UIButton!
     @IBAction func regionButtonTapped(sender: AnyObject) {
         let regionAlert = UIAlertController(title: "Select a Region", message: "", preferredStyle: .ActionSheet)
         let na = UIAlertAction(title: "North America", style: .Default, handler: { (_) -> Void in
@@ -69,6 +69,11 @@ class SearchViewController: UIViewController {
             self.regionButtonLabel.setTitle("  Korea:", forState: .Normal)
             self.regionButtonWidth.constant = 61
         })
+        let jp = UIAlertAction(title: "Japan", style: .Default) { (_) -> Void in
+            self.region = "jp"
+            self.regionButtonLabel.setTitle("  Japan:", forState: .Normal)
+            self.regionButtonWidth.constant = 62
+        }
        
         regionAlert.addAction(na)
         regionAlert.addAction(br)
@@ -80,6 +85,7 @@ class SearchViewController: UIViewController {
         regionAlert.addAction(tr)
         regionAlert.addAction(ru)
         regionAlert.addAction(kr)
+        regionAlert.addAction(jp)
         presentViewController(regionAlert, animated: true, completion: nil)
     }
     
@@ -87,15 +93,47 @@ class SearchViewController: UIViewController {
     
     @IBAction func searchButtonTapped(sender: AnyObject) {
         usernameTextField.resignFirstResponder()
+        
+        self.regionButtonLabel.enabled = false
+        self.searchButtonLabel.enabled = false
+        self.usernameTextField.enabled = false
+        self.searchButtonLabel.backgroundColor = UIColor(red: 26/255, green: 65/255, blue: 121/255, alpha: 0.40)
+        self.searchButtonLabel.setTitle("Searching...", forState: .Normal)
+        
         if Reachability.isConnectedToNetwork() == false {
             print("Internet connection FAILED")
             let noInternetAlert = UIAlertController(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", preferredStyle: .Alert)
             noInternetAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
             self.presentViewController(noInternetAlert, animated: true, completion: nil)
+            
+            self.regionButtonLabel.enabled = true
+            self.searchButtonLabel.enabled = true
+            self.usernameTextField.enabled = true
+            self.searchButtonLabel.backgroundColor = UIColor(red: 26/255, green: 65/255, blue: 121/255, alpha: 1.0)
+            self.searchButtonLabel.setTitle("Search", forState: .Normal)
+            
         } else if region == "" {
             let noRegionAlert = UIAlertController(title: "No Region Selected", message: "Please press the Region button and select a region.", preferredStyle: .Alert)
             noRegionAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
             self.presentViewController(noRegionAlert, animated: true, completion: nil)
+            
+            self.regionButtonLabel.enabled = true
+            self.searchButtonLabel.enabled = true
+            self.usernameTextField.enabled = true
+            self.searchButtonLabel.backgroundColor = UIColor(red: 26/255, green: 65/255, blue: 121/255, alpha: 1.0)
+            self.searchButtonLabel.setTitle("Search", forState: .Normal)
+            
+        } else if usernameTextField.text!.stringByReplacingOccurrencesOfString(" ", withString: "") == "" {
+            let noNameAlert = UIAlertController(title: "No Name Entered", message: "Please enter a valid summoner name for search.", preferredStyle: .Alert)
+            noNameAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+            self.presentViewController(noNameAlert, animated: true, completion: nil)
+            
+            self.regionButtonLabel.enabled = true
+            self.searchButtonLabel.enabled = true
+            self.usernameTextField.enabled = true
+            self.searchButtonLabel.backgroundColor = UIColor(red: 26/255, green: 65/255, blue: 121/255, alpha: 1.0)
+            self.searchButtonLabel.setTitle("Search", forState: .Normal)
+            
         } else {
             FireBaseController.dataAtEndPoint("apiKey") { (data) -> Void in
                 if let key = data as? String {
@@ -111,8 +149,7 @@ class SearchViewController: UIViewController {
                                 if success {
                                     if CurrentGameController.sharedInstance.currentGame.gameId != 0 && CurrentGameController.sharedInstance.currentGame.gameId != -1 {
                                         print("current game success")
-                                        // MARK: Sleep
-                                        NSThread.sleepForTimeInterval(3)
+                                        
                                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                             self.statusLabel.text = "current game found, please wait..."
                                         })
@@ -120,18 +157,23 @@ class SearchViewController: UIViewController {
                                         let allIds = CurrentGameController.sharedInstance.allIds
                                         var count = 0
                                         for id in allIds {
-                                            // MARK: sleep 2
-                                            NSThread.sleepForTimeInterval(1)
+                                            
                                             PastGameController.sharedInstance.searchForTenRecentGames(self.region, summonerId: id, completion: { (success) -> Void in
                                                 if success {
                                                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                                         self.statusLabel.text = "\(id): game history added"
                                                     })
                                                     print("past games appended to Player: \(id)")
-                                                    count++
+                                                    count += 1
                                                     if count == CurrentGameController.sharedInstance.allParticipants.count {
                                                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                                             self.performSegueWithIdentifier("searchToTeams", sender: self)
+                                                            
+                                                            self.regionButtonLabel.enabled = true
+                                                            self.searchButtonLabel.enabled = true
+                                                            self.usernameTextField.enabled = true
+                                                            self.searchButtonLabel.backgroundColor = UIColor(red: 26/255, green: 65/255, blue: 121/255, alpha: 1.0)
+                                                            self.searchButtonLabel.setTitle("Search", forState: .Normal)
                                                         })
                                                     }
                                                 }
@@ -143,11 +185,37 @@ class SearchViewController: UIViewController {
                                         self.statusLabel.text = " "
                                         print("try again")
                                         let noGameAlert = UIAlertController(title: "No game", message: "Player is currently not in a game", preferredStyle: .Alert)
-                                        noGameAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+                                        noGameAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action) -> Void in
+                                            self.regionButtonLabel.enabled = true
+                                            self.searchButtonLabel.enabled = true
+                                            self.usernameTextField.enabled = true
+                                            self.searchButtonLabel.backgroundColor = UIColor(red: 26/255, green: 65/255, blue: 121/255, alpha: 1.0)
+                                            self.searchButtonLabel.setTitle("Search", forState: .Normal)
+                                        }))
                                         noGameAlert.addAction(UIAlertAction(title: "Go to profile", style: .Default, handler: { (action) -> Void in
-                                            self.performSegueWithIdentifier("alertToProfile", sender: self)
+                                            CurrentGameController.sharedInstance.makeFakeGame(self.region, completion: { (success) in
+                                                if success {
+                                                    dispatch_async(dispatch_get_main_queue(), { 
+                                                        self.statusLabel.text = "Please wait..."
+                                                        PastGameController.sharedInstance.searchForTenRecentGames(self.region, summonerId: PlayerController.sharedInstance.currentPlayer.summonerID, completion: { (success) in
+                                                            if success {
+                                                                dispatch_async(dispatch_get_main_queue(), {
+                                                                    self.performSegueWithIdentifier("alertToProfile", sender: self)
+                                                                    self.regionButtonLabel.enabled = true
+                                                                    self.searchButtonLabel.enabled = true
+                                                                    self.usernameTextField.enabled = true
+                                                                    self.searchButtonLabel.backgroundColor = UIColor(red: 26/255, green: 65/255, blue: 121/255, alpha: 1.0)
+                                                                    self.searchButtonLabel.setTitle("Search", forState: .Normal)
+                                                                })
+                                                            }
+                                                        })
+                                                    })
+                                                    
+                                                }
+                                            })
                                         }))
                                         self.presentViewController(noGameAlert, animated: true, completion: nil)
+                                        
                                     })
                                     
                                 }
@@ -160,6 +228,11 @@ class SearchViewController: UIViewController {
                             let noPlayerAlert = UIAlertController(title: "No player", message: "No player found by that name", preferredStyle:  .Alert)
                             noPlayerAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
                             self.presentViewController(noPlayerAlert, animated: true, completion: nil)
+                            self.regionButtonLabel.enabled = true
+                            self.searchButtonLabel.enabled = true
+                            self.usernameTextField.enabled = true
+                            self.searchButtonLabel.backgroundColor = UIColor(red: 26/255, green: 65/255, blue: 121/255, alpha: 1.0)
+                            self.searchButtonLabel.setTitle("Search", forState: .Normal)
                         }
                     }
                 } else {
@@ -167,6 +240,11 @@ class SearchViewController: UIViewController {
                     let noInternetAlert = UIAlertController(title: "No Server Connection", message: "Servers are currently down or busy, please try again later.", preferredStyle: .Alert)
                     noInternetAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
                     self.presentViewController(noInternetAlert, animated: true, completion: nil)
+                    self.regionButtonLabel.enabled = true
+                    self.searchButtonLabel.enabled = true
+                    self.usernameTextField.enabled = true
+                    self.searchButtonLabel.backgroundColor = UIColor(red: 26/255, green: 65/255, blue: 121/255, alpha: 1.0)
+                    self.searchButtonLabel.setTitle("Search", forState: .Normal)
                 }
             }
             
@@ -176,10 +254,13 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        logoConstraint.constant = view.frame.size.height / 8
         regionButtonLabel.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         regionButtonLabel.layer.cornerRadius = 5
-//        usernameTextField.layer.borderWidth = 1
-//        usernameTextField.layer.borderColor = UIColor.whiteColor().CGColor
+        
+        searchButtonLabel.backgroundColor = UIColor(red: 26/255, green: 65/255, blue: 121/255, alpha: 1.0)
+        searchButtonLabel.layer.cornerRadius = 5
+
         usernameTextField.layer.cornerRadius = 5
         usernameTextField.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
         if Reachability.isConnectedToNetwork() == true {
@@ -190,20 +271,45 @@ class SearchViewController: UIViewController {
             noInternetAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
             self.presentViewController(noInternetAlert, animated: true, completion: nil)
         }
-        statusLabel.text = " "
+        statusLabel.text = ""
         
+        usernameTextField.delegate = self
+        
+    }
+    
+    func dismissKeyboard() {
+        usernameTextField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        usernameTextField.resignFirstResponder()
+        return true
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "alertToProfile" {
+            
+            if let detailViewController = segue.destinationViewController as? PlayerDetailViewController {
+                _ = detailViewController.view
+                
+                let player = CurrentGameController.sharedInstance.allteams[0][0]
+                detailViewController.updateWithPlayer(player)
+                
+            }
+        }
     }
     
     
     override func viewWillAppear(animated: Bool) {
-        statusLabel.text = " "
+        statusLabel.text = ""
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
     
 

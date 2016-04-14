@@ -11,6 +11,7 @@ import Foundation
 //items to update: API versions, regions
 
 class NetworkController {
+    
     static let ApiKey = CurrentGameController.sharedInstance.ApiKey
     
     static func searchForId(region: String, searchTerm: String) -> NSURL {
@@ -54,6 +55,9 @@ class NetworkController {
         if region == "kr" {
             platformId = "KR"
         }
+        if region == "jp" {
+            platformId = "JP1"
+        }
         
         return NSURL(string: "https://\(region).api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/\(platformId)/\(summonerId)?api_key=\(ApiKey)")!
     }
@@ -73,15 +77,7 @@ class NetworkController {
     }
     
     
-    //gives matchIds and dates (last 5 ranked)
-    static func pastFiveRanked(region: String, summonerId: String) -> NSURL {
-        return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v2.2/matchlist/by-summoner/\(summonerId)?rankedQueues=RANKED_SOLO_5x5&seasons=PRESEASON2014,SEASON2014,PRESEASON2015,SEASON2015,PRESEASON2016,SEASON2016&beginIndex=0&endIndex=5&api_key=\(ApiKey)")!
-    }
-    
-    //stats of the match - 5 calls per player
-    static func pastRankedGame(region: String, matchId: String) -> NSURL {
-        return NSURL(string: "https://\(region).api.pvp.net/api/lol/\(region)/v2.2/match/\(matchId)?api_key=\(ApiKey)")!
-    }
+
     
     //images:
     
@@ -90,6 +86,15 @@ class NetworkController {
         return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/\(region)/v1.2/versions?api_key=\(ApiKey)")!
     }
     
+    //all champions
+    static func allChamps(region: String) -> NSURL {
+        return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/\(region)/v1.2/champion?champData=image&api_key=\(ApiKey)")!
+    }
+    
+    //all spells
+    static func allSpells(region: String) -> NSURL {
+        return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/\(region)/v1.2/summoner-spell?spellData=image&api_key=\(ApiKey)")!
+    }
     //champion by ID
     static func champion(championId: Int) -> NSURL {
         return NSURL(string: "https://global.api.pvp.net/api/lol/static-data/\(CurrentGameController.sharedInstance.savedRegion)/v1.2/champion/\(championId)?champData=image&api_key=\(ApiKey)")!

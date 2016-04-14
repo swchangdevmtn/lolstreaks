@@ -10,7 +10,12 @@ import UIKit
 
 class CurrGamePlayerCollectionViewCell: UICollectionViewCell {
     
+    
     @IBOutlet weak var champImg: UIImageView!
+    
+    @IBOutlet weak var keystoneImg: UIImageView!
+    
+    
     @IBOutlet weak var spell1Img: UIImageView!
     @IBOutlet weak var spell2Img: UIImageView!
     
@@ -19,6 +24,8 @@ class CurrGamePlayerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var levelLabel: UILabel!
     
     @IBOutlet weak var streakImage: UIImageView!
+    @IBOutlet weak var goodBadDayImage: UIImageView!
+    
     @IBOutlet weak var winrateLabel: UILabel!
     @IBOutlet weak var kdaLabel: UILabel!
     @IBOutlet weak var kdaAvgLabel: UILabel!
@@ -32,5 +39,8 @@ class CurrGamePlayerCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var lpLabel: UILabel!
     @IBOutlet weak var rankWinLossLabel: UILabel!
+    
+    class var defaultHeight: CGFloat { get { return 39 }}
+    class var expandedHeight: CGFloat { get { return 100 }}
     
 }

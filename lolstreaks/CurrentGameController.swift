@@ -23,63 +23,95 @@ class CurrentGameController {
     var ddragonVersion: String = ""
     var levelDictionary: NSDictionary = [:]
     var savedRegion: String = ""
-    
     var soloRanks: [RankSolo] = []
+    
+    let keystones: [Int] = [6161, 6162, 6164, 6361, 6362, 6363, 6261, 6262, 6263]
+    let queueDictionary: [Int:String] = [0:"Custom Game", 8:"3v3 Normal", 2:"5v5 Normal Blind", 14:"5v5 Normal Draft", 4:"5v5 Ranked", 6:"5v5 Ranked Premade", 9:"3v3 Ranked Premade", 41:"3v3 Ranked Teams", 42:"5v5 Ranked Teams", 16:"5v5 Dominion Blind", 17:"5v5 Dominion Draft", 7:"Coop vs AI", 25:"Coop vs AI", 31:"Coop vs AI", 32:"Coop vs AI", 33:"Coop vs AI", 52:"Coop vs AI", 61:"5v5 Teambuilder", 65:"ARAM Howling Abyss", 70:"5v5 OneForAll", 72:"1v1 Showdown", 73:"2v2 Showdown", 75:"6v6 SR", 76:"5v5 URF", 83:"5v5 URF vs AI", 91:"Doombots Rank 1", 92:"Doombots Rank 2", 93:"Doombots Rank 5", 96:"5v5 Ascension", 98:"6v6 Twisted Treeline", 100:"ARAM Bilgewater", 300:"5v5 King Poro", 310:"5v5 Nemesis", 313:"Black Market Brawlers", 400:"5v5 Normal Draft", 410:"5v5 Ranked Draft"]
     
     func searchForDdragonVersion(region: String, completion:(success: Bool) -> Void) {
         if let ddragonVersionURL = NetworkController.ddragonVersion(region) as NSURL? {
-            NetworkController.dataAtURL(ddragonVersionURL, completion: { (resultData) -> Void in
-                guard let data = resultData else {
-                    print("no ddragon version found")
-                    completion(success: false)
-                    return
-                }
+            if let data = NSData(contentsOfURL: ddragonVersionURL) {
                 let json = JSON(data: data)
                 self.ddragonVersion = json[0].stringValue
                 completion(success: true)
-            })
+            } else {
+                completion(success: false)
+            }
         }
     }
     
     func searchForRanks(region: String, idString: String, completion:(success: Bool) -> Void) {
+        self.soloRanks = []
         if let rankURL = NetworkController.playerRank(region, summonerId: idString) as NSURL? {
-            NetworkController.dataAtURL(rankURL, completion: { (resultData) -> Void in
-                do {
-                    let resultsAnyObject = try NSJSONSerialization.JSONObjectWithData(resultData!, options: .AllowFragments)
-                    let idDictionary = resultsAnyObject as! NSDictionary
-                    for id in self.allIds {
-                        let idDictionaryKey = String(id)
-                        let idInt = id as Int
-                        var index = 0
-                        let rankForPlayer = RankSolo(id: idInt, rank: "Unranked", division: "", wins: 0, losses: 0, lp: 0, series: "none")
-                        if let idRankArray = idDictionary[idDictionaryKey] as? NSArray {
-                            while index < idRankArray.count {
-                                let queueType = idRankArray[index]["queue"] as? String
-                                if queueType == "RANKED_SOLO_5x5" {
-                                    rankForPlayer.rank = idRankArray[index]["tier"] as! String
-                                    rankForPlayer.division = idRankArray[index]["entries"]!![0]["division"] as! String
-                                    rankForPlayer.wins = idRankArray[index]["entries"]!![0]["wins"] as! Int
-                                    rankForPlayer.losses = idRankArray[index]["entries"]!![0]["losses"] as! Int
-                                    rankForPlayer.lp = idRankArray[index]["entries"]!![0]["leaguePoints"] as! Int
-                                    if let series = idRankArray[index]["entries"]!![0]["miniSeries"] as? NSDictionary {
-                                        rankForPlayer.series = series["progress"] as! String
-                                    }
-                                    self.soloRanks.append(rankForPlayer)
-                                    break
+            if let rankData = NSData(contentsOfURL: rankURL) {
+                let json = JSON(data: rankData)
+                for id in self.allIds {
+                    let idDictionaryKey = String(id)
+                    let idInt = id as Int
+                    var index = 0
+                    let rankForPlayer = RankSolo(id: idInt, rank: "Unranked", division: "", wins: 0, losses: 0, lp: 0, series: "none")
+                    if let idRankArray = json[idDictionaryKey].array {
+                        while index < idRankArray.count {
+                            let queueType = idRankArray[index]["queue"].stringValue
+                            if queueType == "RANKED_SOLO_5x5" {
+                                rankForPlayer.rank = idRankArray[index]["tier"].stringValue
+                                rankForPlayer.division = idRankArray[index]["entries"][0]["division"].stringValue
+                                rankForPlayer.wins = idRankArray[index]["entries"][0]["wins"].intValue
+                                rankForPlayer.losses = idRankArray[index]["entries"][0]["losses"].intValue
+                                rankForPlayer.lp = idRankArray[index]["entries"][0]["leaguePoints"].intValue
+                                if let series = idRankArray[index]["entries"][0]["miniSeries"].dictionary {
+                                    rankForPlayer.series = series["progress"]!.stringValue
                                 }
-                                index++
+                                self.soloRanks.append(rankForPlayer)
+                                break
                             }
+                            index += 1
                         }
                     }
-                    completion(success: true)
-                } catch {
-                    completion(success: true)
                 }
-            })
+                completion(success: true)
+            } else {
+                completion(success: true)
+            }
         }
     }
     
-
+    func makeFakeGame(region: String, completion:(success: Bool) -> Void ) {
+        let fakeParticipant = Participant(teamId: 0, spell1Id: 0, spell2Id: 0, championId: 0, profileIconId: PlayerController.sharedInstance.currentPlayer.profileIconId, summonerName: PlayerController.sharedInstance.currentPlayer.name, summonerId: PlayerController.sharedInstance.currentPlayer.summonerID)
+        self.allIds = []
+        self.teamblue = []
+        self.allteams = []
+        
+        allIds.append(PlayerController.sharedInstance.currentPlayer.summonerID)
+        
+        
+        self.searchForRanks(region, idString: String(fakeParticipant.summonerId)) { (success) in
+            if success {
+                if self.soloRanks.count > 0 {
+                    fakeParticipant.rankSolo = self.soloRanks[0].rank
+                    fakeParticipant.rankSoloDiv = self.soloRanks[0].division
+                    fakeParticipant.rankSoloWins = self.soloRanks[0].wins
+                    fakeParticipant.rankSoloLosses = self.soloRanks[0].losses
+                    fakeParticipant.rankSoloLp = self.soloRanks[0].lp
+                    fakeParticipant.rankSoloSeries = self.soloRanks[0].series
+                } else {
+                    fakeParticipant.rankSolo = "Unranked"
+                    fakeParticipant.rankSoloDiv = ""
+                    fakeParticipant.rankSoloWins = 0
+                    fakeParticipant.rankSoloLosses = 0
+                    fakeParticipant.rankSoloLp = 0
+                    fakeParticipant.rankSoloSeries = "none"
+                }
+                self.teamblue.append(fakeParticipant)
+                self.allteams.append(self.teamblue)
+                self.allteams[0][0].summonerLevel = PlayerController.sharedInstance.currentPlayer.level
+                completion(success: true)
+                
+            }
+        }
+        
+    }
+    
     func searchForCurrentGame(region: String, summonerId: Int, completion:(success: Bool) -> Void) {
         searchForDdragonVersion(region) { (success) -> Void in
             print(self.ddragonVersion)
@@ -109,7 +141,6 @@ class CurrentGameController {
                     self.currentGame.gameType = json["gameType"].stringValue
                     self.currentGame.gameQueueConfigId = json["gameQueueConfigId"].intValue
                     print("gameId: \(self.currentGame.gameId), gameLength: \(self.currentGame.gameLength), gameMode: \(self.currentGame.gameMode), gameType: \(self.currentGame.gameType), gameQueue: \(self.currentGame.gameQueueConfigId)")
-                    
                     //String of IDs used to grab levels
                     var idString = ""
                     
@@ -119,6 +150,7 @@ class CurrentGameController {
                             let participantArray = resultsDictionary["participants"] as? [[String:AnyObject]]
                             for participantDictionary in participantArray! {
                                 let participant = Participant(json: participantDictionary)
+                                
                                 idString += String(participant.summonerId) + ","
                                 self.allIds.append(participant.summonerId)
                             }
@@ -139,6 +171,17 @@ class CurrentGameController {
                                                 let levelDictionaryKey = String(participant.summonerId)
                                                 if let playersDictionary = self.levelDictionary[levelDictionaryKey] {
                                                     participant.summonerLevel = playersDictionary["summonerLevel"] as? Int
+                                                }
+                                                
+                                                if let masteriesArray = participantDictionary["masteries"] as? [[String:Int]] {
+                                                    for masteriesDictionary in masteriesArray {
+                                                        if let masteryId = masteriesDictionary["masteryId"] {
+                                                            if self.keystones.contains(masteryId) {
+                                                                participant.keystoneId = masteryId as Int
+                                                                break
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 
                                                 //grabbing champion image and name
@@ -196,6 +239,7 @@ class CurrentGameController {
                                                 participant.spell2Img = spell2Image
                                                 participant.championImg = championImage
                                                 participant.championName = championName
+                                                print(participant.keystoneId)
                                                 self.allParticipants.append(participant)
                                             }
                                             self.teamblue = self.allParticipants.filter({$0.teamId == 100})
@@ -221,8 +265,7 @@ class CurrentGameController {
                                     })
                                 }
                             })
-                        }
-                        else {
+                        } else {
                             completion(success: false)
                         }
                     } catch {

@@ -11,71 +11,92 @@ import UIKit
 class CurrGameViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    
+    var expandedIndexPaths: [NSIndexPath] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let screenSize = UIScreen.mainScreen().bounds
+        let screenWidth = screenSize.width
 
-//        let longPressGesture = UILongPressGestureRecognizer(target: self, action: "handleLongGesture:")
-//        self.collectionView.addGestureRecognizer(longPressGesture)
+        let navLabel = UILabel(frame: CGRectMake(0,0, 0.8*screenWidth ,50))
+        navLabel.numberOfLines = 2
+        navLabel.textAlignment = .Right
+        navLabel.font = UIFont.systemFontOfSize(14.0)
+        navLabel.textColor = UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
+        
+        let queueId = CurrentGameController.sharedInstance.currentGame.gameQueueConfigId
+        
+        
+        let gameTime = CurrentGameController.sharedInstance.currentGame.gameLength
+        let gameMinutes: Int = gameTime/60
+        let gameSeconds: Int = gameTime - gameMinutes*60
+        var timeText = ""
+        switch gameTime {
+        case Int.min..<0 :
+            if gameSeconds > -10 {
+                timeText = "-\(abs(gameMinutes)):0\(abs(gameSeconds))"
+            } else {
+                timeText = "-\(abs(gameMinutes)):\(abs(gameSeconds))"
+            }
+        default:
+            if gameSeconds < 10 {
+                timeText = "\(gameMinutes):0\(gameSeconds)"
+            } else {
+                timeText = "\(gameMinutes):\(gameSeconds)"
+            }
+        }
+        
+        
+        if let navText = CurrentGameController.sharedInstance.queueDictionary[queueId] {
+            navLabel.text = "\(navText)\n\(timeText)"
+        } else {
+            navLabel.text = "Unknown\n\(timeText)"
+        }
+        
+        self.navigationItem.titleView = navLabel
+        
     }
+
     
-//    func handleLongGesture(gesture: UILongPressGestureRecognizer) {
-//        
-//        switch(gesture.state) {
-//            
-//        case UIGestureRecognizerState.Began:
-//            guard let selectedIndexPath = self.collectionView.indexPathForItemAtPoint(gesture.locationInView(self.collectionView)) else {
-//                break
-//            }
-//            collectionView.beginInteractiveMovementForItemAtIndexPath(selectedIndexPath)
-//        case UIGestureRecognizerState.Changed:
-//            collectionView.updateInteractiveMovementTargetPosition(gesture.locationInView(gesture.view!))
-//        case UIGestureRecognizerState.Ended:
-//            collectionView.endInteractiveMovement()
-//        default:
-//            collectionView.cancelInteractiveMovement()
-//        }
-//    }
-    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+       
+    }
 
  
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "playerCellToDetail" {
+        
+        if segue.identifier == "playerCellsToDetail" {
+            
             if let detailViewController = segue.destinationViewController as? PlayerDetailViewController {
                 _ = detailViewController.view
                 
-                let cell = sender as? CurrGamePlayerCollectionViewCell
-                if let indexPath = collectionView.indexPathForCell(cell!) {
-                    let parentIndex = indexPath.section
-                    let player = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.row]
+                if let indexPath = sender as? NSIndexPath {
+                
+                    let player = CurrentGameController.sharedInstance.allteams[indexPath.section][indexPath.row]
                     detailViewController.updateWithPlayer(player)
                 }
             }
         }
     }
+    
+    func imageResize(image: UIImage) -> UIImage {
+        let originalHeight = image.size.height
+        let originalWidth = image.size.width
+        let newHeight = 0.9*originalHeight
+        let newWidth = 0.9*originalWidth
+        
+        let crop = CGRectMake((originalWidth-newWidth)/2, (originalHeight-newHeight)/2, newWidth, newHeight)
+        let cgImage = CGImageCreateWithImageInRect(image.CGImage, crop)
+        let newImage = UIImage(CGImage: cgImage!)
+        return newImage
+    }
 }
 
 extension CurrGameViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-
-//    func collectionView(collectionView: UICollectionView, moveItemAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-//        var parentIndex = -1
-//        
-//        if sourceIndexPath.section == 0 {
-//            parentIndex = 0
-//        } else {
-//            parentIndex = 1
-//        }
-//        
-//        if sourceIndexPath.section == destinationIndexPath.section {
-//            let temp = CurrentGameController.sharedInstance.allteams[parentIndex][sourceIndexPath.row]
-//            CurrentGameController.sharedInstance.allteams[parentIndex][sourceIndexPath.row] = CurrentGameController.sharedInstance.allteams[parentIndex][destinationIndexPath.row]
-//            CurrentGameController.sharedInstance.allteams[parentIndex][destinationIndexPath.row] = temp
-//        } else {
-//            CurrentGameController.sharedInstance.allteams[parentIndex][sourceIndexPath.row] = CurrentGameController.sharedInstance.allteams[parentIndex][sourceIndexPath.row]
-//            CurrentGameController.sharedInstance.allteams[parentIndex][destinationIndexPath.row] = CurrentGameController.sharedInstance.allteams[parentIndex][destinationIndexPath.row]
-//        }
-//        
-//    }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return CurrentGameController.sharedInstance.allteams.count
@@ -89,15 +110,38 @@ extension CurrGameViewController: UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "teamCell", forIndexPath: indexPath) as! CurrGameTeamCollectionReusableView
+        
+        
+        let imageString = TeamController.sharedInstance.turrets[indexPath.section]
+        view.teamImage.image = UIImage(named: imageString)
+        
+        
+        let redTeamTextAttributes = [NSStrokeColorAttributeName : UIColor.whiteColor(),
+                                     NSForegroundColorAttributeName : UIColor(red: 130/255, green: 52/255, blue: 47/255, alpha: 1),
+                                     NSStrokeWidthAttributeName : -5.0]
+        let blueTeamTextAttributes = [NSStrokeColorAttributeName : UIColor.whiteColor(),
+                                      NSForegroundColorAttributeName : UIColor(red: 43/255, green: 88/255, blue: 139/255, alpha: 1),
+                                      NSStrokeWidthAttributeName : -5.0]
+        
+        switch
+        indexPath.section {
+        case 0:
+            view.teamLabel.attributedText = NSAttributedString(string: TeamController.sharedInstance.teams[indexPath.section], attributes: redTeamTextAttributes)
+        case 1:
+            view.teamLabel.attributedText = NSAttributedString(string: TeamController.sharedInstance.teams[indexPath.section], attributes: blueTeamTextAttributes)
+        default:
+            view.teamLabel.textColor = UIColor.grayColor()
+        }
+        return view
+    }
+    
+    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("playerCell", forIndexPath: indexPath) as! CurrGamePlayerCollectionViewCell
-        var parentIndex = 0
         
-        if indexPath.section == 0 {
-            parentIndex = 0
-        } else {
-            parentIndex = 1
-        }
+        let parentIndex = indexPath.section
         
         switch
         parentIndex {
@@ -110,20 +154,6 @@ extension CurrGameViewController: UICollectionViewDataSource, UICollectionViewDe
         default:
             cell.backgroundColor = UIColor.grayColor()
         }
-        
-//        let borderBottom = CALayer()
-//        let borderWidth = CGFloat(3.0)
-//        if parentIndex == 0 {
-//            borderBottom.borderColor = UIColor(red: 148/255, green: 48/255, blue: 33/255, alpha: 1).CGColor
-//        }
-//        if parentIndex == 1 {
-//            borderBottom.borderColor = UIColor(red: 27/255, green: 91/255, blue: 135/255, alpha: 1).CGColor
-//        }
-//        borderBottom.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6).CGColor
-//        borderBottom.frame = CGRect(x: 0, y: cell.frame.height - 1.0, width: cell.frame.width , height: cell.frame.height - 1.0)
-//        borderBottom.borderWidth = borderWidth
-//        cell.layer.addSublayer(borderBottom)
-//        cell.layer.masksToBounds = true
         
         let redStrokeTextAttributes = [NSStrokeColorAttributeName : UIColor(red: 226/255, green: 0, blue: 0, alpha: 1),
             NSStrokeWidthAttributeName : -5.0]
@@ -141,10 +171,10 @@ extension CurrGameViewController: UICollectionViewDataSource, UICollectionViewDe
                     } else {
                         cell.kdaLabel.attributedText = NSAttributedString(string: "Perfect!", attributes: greenStrokeTextAttributes)
                         if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames >= 3 && CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate >= 0.7 {
-                            let winString = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate!)
+                            let winString = String(format: "%.0f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate! * 100) + "%"
                             cell.winrateLabel.attributedText = NSAttributedString(string: winString, attributes: greenStrokeTextAttributes)
                         } else if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames >= 3 && CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate <= 0.3 {
-                            let winString = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate!)
+                            let winString = String(format: "%.0f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate! * 100) + "%"
                             cell.winrateLabel.attributedText = NSAttributedString(string: winString, attributes: redStrokeTextAttributes)
                         } else {
                             cell.winrateLabel.text = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate!)
@@ -162,13 +192,13 @@ extension CurrGameViewController: UICollectionViewDataSource, UICollectionViewDe
                         cell.kdaLabel.text = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rKDA!)
                     }
                     if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames >= 3 && CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate >= 0.7 {
-                        let winString = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate!)
+                        let winString = String(format: "%.0f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate! * 100) + "%"
                         cell.winrateLabel.attributedText = NSAttributedString(string: winString, attributes: greenStrokeTextAttributes)
                     } else if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames >= 3 && CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate <= 0.3 {
-                        let winString = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate!)
+                        let winString = String(format: "%.0f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate! * 100) + "%"
                         cell.winrateLabel.attributedText = NSAttributedString(string: winString, attributes: redStrokeTextAttributes)
                     } else {
-                        cell.winrateLabel.text = String(format: "%.2f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate!)
+                        cell.winrateLabel.text = String(format: "%.0f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rWinrate! * 100) + "%"
                     }
                     
                     cell.numberOfGamesLabel.text = String("in \(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames!) games:")
@@ -191,37 +221,59 @@ extension CurrGameViewController: UICollectionViewDataSource, UICollectionViewDe
                 }
             }
         }
-//        String(format: "%.1f", CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rKillAvg!)
-        
-        
-        
         
         let version = CurrentGameController.sharedInstance.ddragonVersion
         if let championImage = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].championImg {
-            if let champImgURL = NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/champion/\(championImage)") {
-                cell.champImg.image = UIImage(data: NSData(contentsOfURL: champImgURL)!)
+            let champImgURL = NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/champion/\(championImage)")
+            if let originalChampImageData = NSData(contentsOfURL: champImgURL!){
+                let originalChampImage = UIImage(data: originalChampImageData)
+                cell.champImg.image = imageResize(originalChampImage!)
+                cell.champImg.layer.cornerRadius = 17.5
+            }
+            
+        }
+        
+        if let keystoneImage = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].keystoneId {
+            let keystoneImageURL = NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/mastery/\(keystoneImage).png")
+            if let keystoneImageData = NSData(contentsOfURL: keystoneImageURL!) {
+                cell.keystoneImg.image = UIImage(data: keystoneImageData)
+                
+                cell.keystoneImg.layer.borderColor = UIColor.whiteColor().CGColor
+                cell.keystoneImg.layer.borderWidth = 0.6
             }
         }
+        
         if let spell1Image = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].spell1Img {
-            if let spell1ImgURL = NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell1Image)") {
-                cell.spell1Img.image = UIImage(data: NSData(contentsOfURL: spell1ImgURL)!)
+            let spell1ImgURL = NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell1Image)")
+            if let spell1ImgData = NSData(contentsOfURL: spell1ImgURL!) {
+                cell.spell1Img.image = UIImage(data: spell1ImgData)
+                cell.spell1Img.layer.borderColor = UIColor.whiteColor().CGColor
+                cell.spell1Img.layer.borderWidth = 0.6
             }
         }
+        
         if let spell2Image = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].spell2Img {
-            if let spell2ImgURL = NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell2Image)") {
-                cell.spell2Img.image = UIImage(data: NSData(contentsOfURL: spell2ImgURL)!)
+            let spell2ImgURL = NSURL(string: "http://ddragon.leagueoflegends.com/cdn/\(version)/img/spell/\(spell2Image)")
+            if let spell2ImgData = NSData(contentsOfURL: spell2ImgURL!) {
+                cell.spell2Img.image = UIImage(data: spell2ImgData)
+                
+                cell.spell2Img.layer.borderColor = UIColor.whiteColor().CGColor
+                cell.spell2Img.layer.borderWidth = 0.6
             }
         }
+        
         let strokeTextAttributes = [NSStrokeColorAttributeName : UIColor.whiteColor(),
             NSForegroundColorAttributeName : UIColor.blackColor(),
             NSStrokeWidthAttributeName : -5.0]
-//        let blackStrokeTextAttributes = [NSStrokeColorAttributeName : UIColor.blackColor(), NSStrokeWidthAttributeName : -2.0]
         
         cell.playerName.text = String("\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].summonerName)")
-//        cell.playerName.attributedText = NSAttributedString(string: "\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].summonerName)", attributes: strokeTextAttributes)
+        
         cell.champName.text = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].championName
+        
         cell.levelLabel.text = String("lvl:\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].summonerLevel!)")
+        
         cell.lpLabel.text = "(\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloLp!) LP)"
+        
         cell.rankDivLabel.attributedText = NSAttributedString(string: "\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.row].rankSoloDiv!)", attributes: strokeTextAttributes)
         
         cell.rankWinLossLabel.text = "\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloWins!)/\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloLosses!)"
@@ -231,54 +283,22 @@ extension CurrGameViewController: UICollectionViewDataSource, UICollectionViewDe
         if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloSeries != "none" {
             let seriesString = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloSeries!
             var xoString = ""
-//            var xoStringArray = [Character]()
+            
             let check: Character = "✓"
             let xmark: Character = "✕"
             let dash: Character = "-"
             for i in seriesString.characters {
                 if i == "W" {
                     xoString.append(check)
-//                    xoStringArray.append(check)
-//                    xoStringArray.append(Character(" "))
                 }
                 if i == "L" {
                     xoString.append(xmark)
-//                    xoStringArray.append(xmark)
-//                    xoStringArray.append(Character(" "))
                 }
                 if i == "N" {
                     xoString.append(Character(" "))
                     xoString.append(dash)
-                    
-//                    xoStringArray.append(dash)
-//                    xoStringArray.append(Character(" "))
                 }
             }
-//            let attributeXoString = NSMutableAttributedString(string: xoString)
-//            
-//            var redRange = [Int]()
-//            var greenRange = [Int]()
-//            var grayRange = [Int]()
-//            for var i = 0; i < xoStringArray.count; i++ {
-//                if xoStringArray[i] == check {
-//                    greenRange.append(i)
-//                }
-//                if xoStringArray[i] == xmark {
-//                    redRange.append(i)
-//                }
-//                if xoStringArray[i] == dash {
-//                    grayRange.append(i)
-//                }
-//            }
-//            for i in redRange {
-//                attributeXoString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: NSRange(location: i, length: 1))
-//            }
-//            for i in greenRange {
-//                attributeXoString.addAttribute(NSForegroundColorAttributeName, value: UIColor.greenColor(), range: NSRange(location: i, length: 1))
-//            }
-//            for i in grayRange {
-//                attributeXoString.addAttribute(NSForegroundColorAttributeName, value: UIColor.grayColor(), range: NSRange(location: i, length: 1))
-//            }
             
             cell.rankSeriesLabel.text = "Series: "
             cell.rankSeriesProgress.text = xoString
@@ -372,20 +392,74 @@ extension CurrGameViewController: UICollectionViewDataSource, UICollectionViewDe
             cell.rankImg.image = UIImage(named: "challenger_1")
         }
         
-        
-        if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rHotStreak == true {
+        cell.streakImage.image = UIImage(named: "blank")
+        cell.goodBadDayImage.image = UIImage(named: "blank")
+        if CurrentGameController.sharedInstance.allteams[indexPath.section][indexPath.item].rHotStreak == true {
             cell.streakImage.image = UIImage(named: "hotstreak")
         }
-        if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rColdStreak == true {
-            cell.streakImage.image = UIImage(named: "coldstreak")
+        if CurrentGameController.sharedInstance.allteams[indexPath.section][indexPath.item].rColdStreak == true {
+            cell.streakImage.image = UIImage(named: "coldstreak2")
         }
         
+        if CurrentGameController.sharedInstance.allteams[indexPath.section][indexPath.item].rGoodDay == true {
+            if CurrentGameController.sharedInstance.allteams[indexPath.section][indexPath.item].rHotStreak == false && CurrentGameController.sharedInstance.allteams[indexPath.section][indexPath.item].rColdStreak == false {
+                cell.streakImage.image = UIImage(named: "sunshine")
+            } else {
+                cell.goodBadDayImage.image = UIImage(named: "sunshine")
+            }
+        }
+        
+        if CurrentGameController.sharedInstance.allteams[indexPath.section][indexPath.item].rBadDay == true {
+            if CurrentGameController.sharedInstance.allteams[indexPath.section][indexPath.item].rHotStreak == false && CurrentGameController.sharedInstance.allteams[indexPath.section][indexPath.item].rColdStreak == false {
+                cell.streakImage.image = UIImage(named: "raincloud")
+            } else {
+                cell.goodBadDayImage.image = UIImage(named: "raincloud")
+            }
+        }
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.size.width, height: 40)
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+//        if expandedIndexPaths.contains(indexPath) {
+//            let indexOfItem = expandedIndexPaths.indexOf(indexPath)
+//            expandedIndexPaths.removeAtIndex(indexOfItem!)
+//            collectionView.reloadItemsAtIndexPaths([indexPath])
+//        } else {
+//            expandedIndexPaths.append(indexPath)
+//            collectionView.reloadItemsAtIndexPaths([indexPath])
+//        }
+        let playerName = CurrentGameController.sharedInstance.allteams[indexPath.section][indexPath.item].summonerName
+        let toProfileAlert = UIAlertController(title: "Go to profile?", message: "Continue to \(playerName)'s profile?", preferredStyle: .Alert)
+        toProfileAlert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+            dispatch_async(dispatch_get_main_queue(), { 
+                self.performSegueWithIdentifier("playerCellsToDetail", sender: indexPath)
+            })
+            
+        }))
+        toProfileAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
+        self.presentViewController(toProfileAlert, animated: true, completion: nil)
     }
     
+//    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+//        let cell = collectionView.cellForItemAtIndexPath(indexPath)
+//        switch indexPath.section {
+//        case 0:
+//            //red
+//            cell?.backgroundColor = UIColor(red: 255/255, green: 82/255, blue: 63/255, alpha: 0.5)
+//        case 1:
+//            //blue
+//            cell?.backgroundColor = UIColor(red: 82/255, green: 160/255, blue: 255/255, alpha: 0.5)
+//        default:
+//            cell?.backgroundColor = UIColor.grayColor()
+//            
+//        }
+//    }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        if expandedIndexPaths.contains(indexPath) {
+            return CGSize(width: collectionView.frame.size.width, height: CurrGamePlayerCollectionViewCell.expandedHeight)
+        } else {
+            return CGSize(width: collectionView.frame.size.width, height: CurrGamePlayerCollectionViewCell.defaultHeight)
+        }
+    }
 }

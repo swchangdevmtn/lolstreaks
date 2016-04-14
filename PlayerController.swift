@@ -23,16 +23,14 @@ class PlayerController {
             if let data = try? NSData(contentsOfURL: url, options: []) {
                 let json = JSON(data: data)
                 
-                if json[trimmedName]["summonerLevel"].intValue > -1 {
-                    self.currentPlayer.summonerID = json[trimmedName]["id"].intValue
-                    self.currentPlayer.name = json[trimmedName]["name"].stringValue
-                    self.currentPlayer.level = json[trimmedName]["summonerLevel"].intValue
-                    self.currentPlayer.profileIconId = json[trimmedName]["profileIconId"].intValue
-                    
-                    print("name: \(currentPlayer.name), id: \(currentPlayer.summonerID), lvl: \(currentPlayer.level), profileIcon: \(currentPlayer.profileIconId)")
-                    
-                }
+                self.currentPlayer.summonerID = json[trimmedName]["id"].intValue
+                self.currentPlayer.name = json[trimmedName]["name"].stringValue
+                self.currentPlayer.level = json[trimmedName]["summonerLevel"].intValue
+                self.currentPlayer.profileIconId = json[trimmedName]["profileIconId"].intValue
+                
+                print("name: \(currentPlayer.name), id: \(currentPlayer.summonerID), lvl: \(currentPlayer.level), profileIcon: \(currentPlayer.profileIconId)")
                 completion(success: true)
+                
             } else {
                 // alert controller here for no player found by that name
                 print("no player found by that name")
