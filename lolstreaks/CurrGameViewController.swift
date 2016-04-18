@@ -217,7 +217,12 @@ extension CurrGameViewController: UICollectionViewDataSource, UICollectionViewDe
         if let killAvg = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rKillAvg {
             if let deathAvg = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rDeathAvg {
                 if let assistAvg = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rAssistAvg {
-                    cell.kdaAvgLabel.text = "\(String(format: "%.1f", killAvg))/\(String(format: "%.1f", deathAvg))/\(String(format: "%.1f", assistAvg))"
+                    if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rCountedGames > 0 {
+                        cell.kdaAvgLabel.text = "\(String(format: "%.1f", killAvg))/\(String(format: "%.1f", deathAvg))/\(String(format: "%.1f", assistAvg))"
+                    } else {
+                        cell.kdaAvgLabel.text = "- / - / -"
+                    }
+                    
                 }
             }
         }
@@ -266,17 +271,24 @@ extension CurrGameViewController: UICollectionViewDataSource, UICollectionViewDe
             NSForegroundColorAttributeName : UIColor.blackColor(),
             NSStrokeWidthAttributeName : -5.0]
         
+        if CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSolo == "Unranked" {
+            cell.lpLabel.text = " "
+            cell.rankWinLossLabel.text = " "
+        } else {
+            cell.lpLabel.text = "(\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloLp!) LP)"
+            cell.rankWinLossLabel.text = "\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloWins!)/\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloLosses!)"
+        }
         cell.playerName.text = String("\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].summonerName)")
         
         cell.champName.text = CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].championName
         
         cell.levelLabel.text = String("lvl:\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].summonerLevel!)")
         
-        cell.lpLabel.text = "(\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloLp!) LP)"
+        
         
         cell.rankDivLabel.attributedText = NSAttributedString(string: "\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.row].rankSoloDiv!)", attributes: strokeTextAttributes)
         
-        cell.rankWinLossLabel.text = "\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloWins!)/\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloLosses!)"
+        
         
         let rankMedal = String("\(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSolo!.capitalizedString) \(CurrentGameController.sharedInstance.allteams[parentIndex][indexPath.item].rankSoloDiv!)")
 

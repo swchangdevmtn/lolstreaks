@@ -10,6 +10,8 @@ import UIKit
 
 class PlayerDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    @IBOutlet weak var winrateLabel: UILabel!
+    @IBOutlet weak var kdaLabel: UILabel!
     @IBOutlet weak var profileIconImage: UIImageView!
     @IBOutlet weak var playerNameLabel: UILabel!
     @IBOutlet weak var playerLevelLabel: UILabel!
@@ -105,6 +107,18 @@ class PlayerDetailViewController: UIViewController, UITableViewDataSource, UITab
             profileIconImage.layer.borderColor = UIColor.whiteColor().CGColor
             profileIconImage.clipsToBounds = true
         }
+        if player.rCountedGames >= 1 {
+            winrateLabel.text = String(format: "%.1f", player.rWinrate!*100) + "%"
+            if player.rKDA == -100 {
+                kdaLabel.text = "Perf!"
+            } else {
+                kdaLabel.text = String(format: "%.2f", player.rKDA!)
+            }
+        } else {
+            winrateLabel.text = "-"
+            kdaLabel.text = "-"
+        }
+        
         animateTable()
     }
     

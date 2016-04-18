@@ -13,5 +13,5 @@ class TeamController {
     static let sharedInstance = TeamController()
     
     var teams = ["Red Side", "Blue Side"]
-    var turrets = ["redturret2", "blueturret2"]
+    var turrets = ["redturret4", "blueturret4"]
 }

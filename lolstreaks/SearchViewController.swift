@@ -86,6 +86,9 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         regionAlert.addAction(ru)
         regionAlert.addAction(kr)
         regionAlert.addAction(jp)
+        
+        regionAlert.popoverPresentationController?.sourceView = view
+        regionAlert.popoverPresentationController?.sourceRect = sender.frame
         presentViewController(regionAlert, animated: true, completion: nil)
     }
     
@@ -153,11 +156,14 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
                                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                                             self.statusLabel.text = "current game found, please wait..."
                                         })
+                                        NSThread.sleepForTimeInterval(4)
                                         //14 requests
                                         let allIds = CurrentGameController.sharedInstance.allIds
                                         var count = 0
                                         for id in allIds {
                                             
+                                        
+                                            NSThread.sleepForTimeInterval(1)
                                             PastGameController.sharedInstance.searchForTenRecentGames(self.region, summonerId: id, completion: { (success) -> Void in
                                                 if success {
                                                     dispatch_async(dispatch_get_main_queue(), { () -> Void in

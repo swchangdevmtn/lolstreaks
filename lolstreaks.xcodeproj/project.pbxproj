@@ -33,7 +33,6 @@
 		54B2720C1C17961E0090A47A /* CurrentGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B2720B1C17961E0090A47A /* CurrentGameController.swift */; };
 		54B272101C179E6F0090A47A /* Participant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B2720F1C179E6F0090A47A /* Participant.swift */; };
 		54B606C61C24A841003A6AC1 /* PlayerDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B606C51C24A841003A6AC1 /* PlayerDetailTableViewCell.swift */; };
-		54D40B731C0E9A0900B0AD4F /* RankedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B721C0E9A0900B0AD4F /* RankedGame.swift */; };
 		54D40B751C0F507700B0AD4F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B741C0F507700B0AD4F /* SearchViewController.swift */; };
 		54D40B791C0F50AE00B0AD4F /* PlayerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D40B781C0F50AE00B0AD4F /* PlayerDetailViewController.swift */; };
 		54DA7D9D1C4816E400266809 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54DA7D9C1C4816E400266809 /* Firebase.framework */; };
@@ -72,7 +71,6 @@
 		54B2720B1C17961E0090A47A /* CurrentGameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentGameController.swift; sourceTree = "<group>"; };
 		54B2720F1C179E6F0090A47A /* Participant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Participant.swift; path = ../Participant.swift; sourceTree = "<group>"; };
 		54B606C51C24A841003A6AC1 /* PlayerDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailTableViewCell.swift; sourceTree = "<group>"; };
-		54D40B721C0E9A0900B0AD4F /* RankedGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankedGame.swift; sourceTree = "<group>"; };
 		54D40B741C0F507700B0AD4F /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		54D40B781C0F50AE00B0AD4F /* PlayerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDetailViewController.swift; sourceTree = "<group>"; };
 		54DA7D9C1C4816E400266809 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
@@ -150,7 +148,6 @@
 				5404DA8F1C0D5295007D7E64 /* PastGame.swift */,
 				546941551C1E623700EFDDF5 /* PastPlayer.swift */,
 				542758531C1F3ABF009B7A9F /* Stats.swift */,
-				54D40B721C0E9A0900B0AD4F /* RankedGame.swift */,
 				54509D571C3CD3F200EFCBFC /* RankSolo.swift */,
 			);
 			name = Model;
@@ -266,7 +263,6 @@
 				54B606C61C24A841003A6AC1 /* PlayerDetailTableViewCell.swift in Sources */,
 				543771441C15D9C7009F2E4F /* SwiftyJSON.swift in Sources */,
 				5404DA8E1C0D528E007D7E64 /* CurrentGame.swift in Sources */,
-				54D40B731C0E9A0900B0AD4F /* RankedGame.swift in Sources */,
 				5444D4C41C154430005320EF /* PlayerController.swift in Sources */,
 				541EA2D81C9C9097008B2172 /* Sprite.swift in Sources */,
 				5404DA6F1C0D4FFB007D7E64 /* AppDelegate.swift in Sources */,
